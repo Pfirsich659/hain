@@ -1,0 +1,17 @@
+{
+  "name": "Hain – dein Gesundheitsgarten",
+  "short_name": "Hain",
+  "description": "Schlaf, Bewegung, Ernährung und Rauchfrei – als Garten, der mit dir wächst.",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#121815",
+  "theme_color": "#121815",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

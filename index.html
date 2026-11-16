@@ -1,0 +1,1350 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#121815">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Hain">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet">
+<title>Hain</title>
+<style>
+:root{
+  --bg:#121815; --card:#1C241F; --card2:#1F2B25; --line:#2C3830; --ink:#E6E2D6; --head:#F1EDE3;
+  --ink2:#B9C2B4; --mute:#9FAA9C; --acc:#8FBF98; --accHi:#B5D9BC; --accInk:#10180F; --track:#2C3A31;
+  --fill:#7DB088; --deep:#22352A; --deep2:#2C4535; --sun:#F1DDAE; --terra:#D9956A; --terraBg:#2E221B;
+  --terraInk:#E8B08C; --gold:#D9A85A;
+  --serif:'Fraunces', Georgia, 'Times New Roman', serif; --sans:'Nunito Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-tap-highlight-color:transparent}
+body{min-height:100vh}
+button,input,select{font-family:inherit;font-size:16px}
+a{color:var(--acc)}a:hover{color:var(--accHi)}
+#app{max-width:480px;margin:0 auto;padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+.top{padding:calc(28px + env(safe-area-inset-top)) 22px 6px;display:flex;flex-direction:column;gap:6px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+h1{margin:0;font-family:var(--serif);font-weight:400;font-size:34px;line-height:1.1;color:var(--head)}
+h2{margin:0;font-family:var(--serif);font-weight:400;font-size:21px;color:var(--head)}
+h3{margin:0;font-size:16px;font-weight:700;color:var(--head)}
+p{margin:0;line-height:1.5}
+.sub{font-size:16px;color:var(--ink2)}
+.muted{color:var(--mute);font-size:13px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.section{padding:0 14px;display:flex;flex-direction:column;gap:14px;margin-top:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.card.soft{background:var(--card2);border-color:transparent}
+.card.deep{background:var(--deep);border-color:transparent;color:var(--head)}
+.card.terra{background:var(--terraBg);border-color:transparent}
+.row{display:flex;align-items:center;gap:10px}
+.between{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.bar{height:8px;border-radius:99px;background:var(--track);overflow:hidden;position:relative}
+.bar>i{display:block;height:100%;background:var(--fill);border-radius:99px}
+.bar.gold>i{background:var(--gold)}
+.big{font-family:var(--serif);font-size:42px;line-height:1;color:var(--head)}
+.num{font-family:var(--serif);font-size:24px;color:var(--head)}
+.btn{min-height:50px;border:none;border-radius:16px;background:var(--acc);color:var(--accInk);font-weight:700;cursor:pointer;padding:0 18px}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn.line{background:transparent;border:1.5px solid var(--acc);color:var(--accHi)}
+.btn.terra{background:var(--terra);color:#1A110B}
+.btn.terraLine{background:transparent;border:1.5px solid var(--terra);color:var(--terraInk)}
+.btn.small{min-height:44px;border-radius:13px;padding:0 14px;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:0 14px;border-radius:99px;border:1.5px solid var(--line);background:transparent;color:var(--ink);font-weight:600;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.check{display:flex;align-items:center;gap:12px;min-height:44px;font-size:16px;cursor:pointer}
+.check input{width:22px;height:22px;accent-color:var(--acc);flex:none}
+.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--ink2)}
+.field input,.field select{min-height:46px;border-radius:12px;border:1.5px solid var(--line);background:#141B17;color:var(--ink);padding:0 12px;width:100%}
+input[type=time],input[type=datetime-local]{color-scheme:dark}
+.stepper{display:flex;align-items:center;gap:8px}
+.stepper input{width:86px;text-align:center;min-height:44px;border-radius:12px;border:1.5px solid var(--line);background:#141B17;color:var(--ink);font-size:17px;font-weight:700}
+.extra{color:var(--gold);font-weight:700;font-size:13px}
+.goal .head{display:flex;align-items:center;gap:10px}
+.goal .head svg{flex:none}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#18201B;border-radius:14px;padding:10px 12px}
+.iconbtn{width:44px;height:44px;border-radius:12px;border:none;background:transparent;color:var(--mute);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.banner{background:var(--terraBg);color:var(--terraInk);border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;font-size:15px}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(28,36,31,.97);border-top:1px solid var(--line);padding:6px 6px calc(10px + env(safe-area-inset-bottom));z-index:20;backdrop-filter:blur(8px)}
+nav.tabs .in{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+nav.tabs button{min-height:56px;border:none;background:transparent;color:var(--mute);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:12px;font-weight:600;cursor:pointer}
+nav.tabs button[aria-current="page"]{color:var(--accHi);font-weight:700}
+.sheetWrap{position:fixed;inset:0;background:rgba(5,8,6,.72);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--card);width:100%;max-width:480px;max-height:92vh;overflow:auto;border-radius:28px 28px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--line)}
+.sheet .x{align-self:flex-end;margin:-8px -6px -10px 0}
+.breathe{width:220px;height:220px;margin:12px auto;border-radius:50%;background:radial-gradient(circle,var(--acc) 0%,#4E7A58 60%,transparent 72%);transform:scale(.55);transition:transform 4s ease-in-out;opacity:.9}
+.center{text-align:center}
+.timeline{display:flex;flex-direction:column}
+.tl{display:flex;gap:14px}
+.tl .rail{display:flex;flex-direction:column;align-items:center}
+.tl .dot{width:22px;height:22px;border-radius:50%;border:2px solid #4A5548;flex:none;display:flex;align-items:center;justify-content:center}
+.tl .dot.done{background:var(--fill);border-color:var(--fill)}
+.tl .dot.now{border:3px solid var(--fill)}
+.tl .ln{width:2px;flex-grow:1;background:#34413A}
+.tl .ln.done{background:var(--fill)}
+.tl .tx{padding-bottom:16px;flex:1}
+.badges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 10px}
+.badge{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:12px;line-height:1.3}
+.badge .b{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#232C26;border:2px dashed #4A5548}
+.badge.on .b{background:var(--track);border:2px solid var(--fill)}
+.badge.on{font-weight:700;color:var(--head)}
+.badge:not(.on){color:var(--mute)}
+.seg{display:flex;background:#141B17;border-radius:14px;padding:4px;gap:4px}
+.seg button{flex:1;min-height:40px;border:none;border-radius:10px;background:transparent;color:var(--ink2);font-weight:700;cursor:pointer;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--card2);color:var(--head);box-shadow:inset 0 0 0 1px var(--line)}
+.metrics{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.metrics .chip{white-space:nowrap}
+.chartWrap{position:relative}
+.chartWrap svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.tip{position:absolute;pointer-events:none;background:#0E1310;border:1px solid var(--line);color:var(--head);padding:8px 10px;border-radius:10px;font-size:13px;white-space:nowrap;transform:translate(-50%,-110%);display:none;z-index:2}
+.tip b{display:block;font-size:15px}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kpi{background:#18201B;border-radius:14px;padding:10px 12px}
+.kpi .v{font-family:var(--serif);font-size:20px;color:var(--head)}
+.kpi .l{font-size:12px;color:var(--mute)}
+details summary{cursor:pointer;color:var(--acc);font-weight:700;min-height:44px;display:flex;align-items:center}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--mute);font-weight:600}
+.mood{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.mood button{min-height:48px;border-radius:12px;border:1.5px solid var(--line);background:transparent;color:var(--ink);font-weight:700;cursor:pointer;font-size:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.mood button[aria-pressed="true"]{background:var(--acc);color:var(--accInk);border-color:var(--acc)}
+canvas.game{width:100%;height:340px;border-radius:18px;background:#0D1411;display:block;touch-action:none}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--acc);color:var(--accInk);padding:12px 18px;border-radius:14px;font-weight:700;z-index:60;max-width:90vw;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.daynav{display:flex;align-items:center;gap:4px}
+</style>
+</head>
+<body>
+<div id="app" aria-live="polite"></div>
+<nav class="tabs" aria-label="Hauptnavigation"><div class="in" id="tabs"></div></nav>
+<div id="sheetRoot"></div>
+<script>
+'use strict';
+/* =========================================================
+   Hain – persönliche Gesundheits-App
+   Datenmodell ist versioniert (SCHEMA_VERSION + MIGRATIONS).
+   Neue Felder in defaults() werden beim Laden automatisch
+   ergänzt, bestehende Daten bleiben erhalten.
+   ========================================================= */
+const APP_VERSION = '1.1.0';
+const SCHEMA_VERSION = 1;
+const MIGRATIONS = {
+  // Beispiel für spätere Versionen:
+  // 1: s => { s.neuesFeld = ...; return s; },   // von Schema 1 auf 2
+};
+
+/* ---------- Hilfsfunktionen ---------- */
+const pad = n => String(n).padStart(2, '0');
+const dk = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parseDk = k => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d); };
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const fmt = (n, dec = 0) => Number(n).toLocaleString('de-DE', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => Math.random().toString(36).slice(2, 10);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const WD = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+const WDL = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+const MON = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+const MONL = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+const fmtDate = d => `${WD[d.getDay()]} ${d.getDate()}.${d.getMonth() + 1}.`;
+const fmtLong = d => `${WDL[d.getDay()]}, ${d.getDate()}. ${MONL[d.getMonth()]}`;
+const tmin = t => { if (!t) return null; const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+const tstr = m => { m = ((Math.round(m) % 1440) + 1440) % 1440; return `${Math.floor(m / 60)}:${pad(m % 60)}`; };
+const weekStart = d => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); const wd = (x.getDay() + 6) % 7; return addDays(x, -wd); };
+const todayK = () => dk(new Date());
+
+function deepMerge(base, data) {
+  if (Array.isArray(base)) return Array.isArray(data) ? data : base;
+  if (base && typeof base === 'object') {
+    const src = (data && typeof data === 'object' && !Array.isArray(data)) ? data : {};
+    const out = { ...src };
+    for (const k in base) out[k] = (k in src) ? deepMerge(base[k], src[k]) : structuredCloneSafe(base[k]);
+    return out;
+  }
+  return data === undefined ? base : data;
+}
+function structuredCloneSafe(v) { return v === undefined ? v : JSON.parse(JSON.stringify(v)); }
+
+/* ---------- Datenmodell ---------- */
+function defaults() {
+  return {
+    schema: SCHEMA_VERSION,
+    createdAt: new Date().toISOString(),
+    onboarded: false,
+    settings: {
+      name: '', bed: '21:00', wake: '04:30', windDownMin: 45,
+      goals: { walk: 30, water: 2.5, veg: 5, gymPerWeek: 4, sleepH: 7.5 },
+      notify: { enabled: false, morning: true, day: true, evening: true, push: false },
+      newsUrl: ''
+    },
+    days: {},
+    smoke: { quitAt: null, perDay: 15, pricePerWeek: 10, cravings: [], slips: [] },
+    rewards: [
+      { id: 'r1', name: 'Kinoabend', price: 15, redeemedAt: null },
+      { id: 'r2', name: 'Wellness-Tag', price: 60, redeemedAt: null },
+      { id: 'r3', name: 'Neue Trainingsschuhe', price: 100, redeemedAt: null }
+    ],
+    garden: { landscape: 0, offsets: { schlaf: 0, bewegung: 0, ernaehrung: 0, rauchfrei: 0, kopf: 0 }, gallery: [], seedsBanked: 0, seedsSpent: 0, rare: [] },
+    badges: {},
+    news: { order: [], remote: [], fetchedOn: null },
+    backup: { lastAt: null }
+  };
+}
+function dayDefaults() {
+  return { walk: 0, water: 0, veg: 0, gym: [], sleep: { bed: '', wake: '' }, morning: { water: false, stretch: false, light: false }, stretchDone: 0, breaths: 0, mood: 0 };
+}
+function migrate(s) {
+  let v = s.schema || 1;
+  while (v < SCHEMA_VERSION) { if (MIGRATIONS[v]) s = MIGRATIONS[v](s); v++; }
+  s.schema = SCHEMA_VERSION;
+  return s;
+}
+
+/* ---------- Speicher: IndexedDB + localStorage-Spiegel ---------- */
+const DB = {
+  db: null,
+  open() {
+    return new Promise(res => {
+      try {
+        const r = indexedDB.open('hain', 1);
+        r.onupgradeneeded = () => r.result.createObjectStore('kv');
+        r.onsuccess = () => { this.db = r.result; res(); };
+        r.onerror = () => res();
+      } catch (e) { res(); }
+    });
+  },
+  get(k) {
+    return new Promise(res => {
+      if (!this.db) return res(null);
+      try { const q = this.db.transaction('kv').objectStore('kv').get(k); q.onsuccess = () => res(q.result ?? null); q.onerror = () => res(null); } catch (e) { res(null); }
+    });
+  },
+  set(k, v) {
+    return new Promise(res => {
+      if (!this.db) return res();
+      try { const tx = this.db.transaction('kv', 'readwrite'); tx.objectStore('kv').put(v, k); tx.oncomplete = () => res(); tx.onerror = () => res(); } catch (e) { res(); }
+    });
+  }
+};
+let S = null;
+async function loadState() {
+  await DB.open();
+  let raw = await DB.get('state');
+  if (!raw) { try { const ls = localStorage.getItem('hain-state'); if (ls) raw = JSON.parse(ls); } catch (e) { } }
+  S = raw ? migrate(deepMerge(defaults(), raw)) : defaults();
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) { }
+}
+let saveTimer = null;
+function save() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    const plain = JSON.parse(JSON.stringify(S));
+    await DB.set('state', plain);
+    try { localStorage.setItem('hain-state', JSON.stringify(plain)); } catch (e) { }
+  }, 120);
+}
+function day(k) { S.days[k] = deepMerge(dayDefaults(), S.days[k] || {}); return S.days[k]; }
+function peek(k) { return S.days[k] ? deepMerge(dayDefaults(), S.days[k]) : null; }
+
+/* ---------- Inhalte ---------- */
+const GOOD_NEWS = [
+  ['Die Ozonschicht erholt sich', 'Laut UN-Bewertung von 2023 könnte sie über der Antarktis bis etwa 2066 wieder so dicht sein wie 1980 – dank des Montreal-Protokolls.'],
+  ['Weniger Raucher weltweit', 'Laut WHO nutzte im Jahr 2000 noch jeder dritte Erwachsene Tabak, heute ist es etwa jeder fünfte. Du bist Teil dieses Trends.'],
+  ['Kindersterblichkeit mehr als halbiert', 'Seit 1990 ist die Sterblichkeit von Kindern unter fünf Jahren weltweit um mehr als die Hälfte gesunken.'],
+  ['Polio fast besiegt', 'Die Fälle von wilder Kinderlähmung sind seit 1988 um über 99 Prozent zurückgegangen.'],
+  ['Die Buckelwale sind zurück', 'Im Südwestatlantik wuchs die Population von rund 450 Tieren auf etwa 25.000 – fast wieder der Bestand vor dem Walfang.'],
+  ['Der Pandabär ist weniger bedroht', 'Seit 2016 gilt der Große Panda nicht mehr als „stark gefährdet“, sondern als „gefährdet“ – dank Schutzgebieten in China.'],
+  ['Comeback des Iberischen Luchses', 'Um 2002 lebten weniger als 100 Tiere. Heute sind es über 2.000, und die Art wurde 2024 als weniger bedroht eingestuft.'],
+  ['Der Weißkopfseeadler hat es geschafft', 'Einst fast ausgestorben, wurde der Wappenvogel der USA 2007 von der Liste der bedrohten Arten gestrichen.'],
+  ['Mehr als die Hälfte Ökostrom', 'Erneuerbare Energien decken in Deutschland inzwischen mehr als die Hälfte des Stromverbrauchs.'],
+  ['Fast alle können lesen', 'Vor 200 Jahren konnte nur etwa jeder achte Erwachsene lesen. Heute sind es fast neun von zehn.'],
+  ['Impfungen retten Millionen Leben', 'Laut WHO hat die Masernimpfung zwischen 2000 und 2022 rund 57 Millionen Todesfälle verhindert.'],
+  ['Eine Krankheit ist ganz verschwunden', 'Die Pocken wurden 1980 offiziell für ausgerottet erklärt – ein Erfolg weltweiter Zusammenarbeit.'],
+  ['Solarstrom ist billig geworden', 'Die Kosten für Strom aus großen Solaranlagen sind zwischen 2010 und 2020 um rund 90 Prozent gesunken.'],
+  ['Weniger extreme Armut', 'Lebten 1990 noch über ein Drittel der Menschen in extremer Armut, ist es heute weniger als jeder zehnte.'],
+  ['Wölfe in Deutschland', 'Seit 2000 kehren Wölfe zurück. Das bundesweite Monitoring zählte zuletzt über 200 Rudel.'],
+  ['Die Lebenserwartung hat sich verdoppelt', 'Um 1900 lag die weltweite Lebenserwartung bei rund 32 Jahren, heute bei über 70.'],
+  ['Der Medinawurm verschwindet', 'Von rund 3,5 Millionen Fällen im Jahr 1986 sank die Zahl auf nur 14 Fälle im Jahr 2023.'],
+  ['Ägypten ist malariafrei', 'Die WHO hat Ägypten 2024 offiziell als malariafrei zertifiziert – nach fast 100 Jahren Bemühungen.'],
+  ['Die Themse lebt wieder', '1957 galt sie als biologisch tot. Heute leben dort wieder Robben, Seepferdchen und über 100 Fischarten.'],
+  ['Elektroautos auf dem Vormarsch', 'Weltweit wurden 2024 mehr als 17 Millionen Elektroautos verkauft.'],
+  ['Der Kakapo kämpft sich zurück', 'Von diesem flugunfähigen Papagei gab es 1995 nur 51 Tiere. Heute sind es über 200.'],
+  ['Schutz für die Hochsee', '2023 einigten sich die UN-Staaten auf ein Abkommen zum Schutz der Artenvielfalt auf hoher See.'],
+  ['Weniger AIDS-Todesfälle', 'Seit dem Höchststand 2004 sind die AIDS-bedingten Todesfälle um rund 69 Prozent gesunken.'],
+  ['Europas Wälder wachsen', 'Die Waldfläche in Europa hat seit 1990 um rund neun Prozent zugenommen.'],
+  ['Der Alpensteinbock ist gerettet', 'Im 19. Jahrhundert gab es nur noch etwa 100 Tiere. Heute leben wieder rund 50.000 in den Alpen.'],
+  ['Mehr Berggorillas', 'In den 1980ern gab es etwa 250 Berggorillas, heute über 1.000 – sie gelten seit 2018 als weniger bedroht.'],
+  ['Indiens Tiger', 'Indien zählte 2022 rund 3.700 wilde Tiger – mehr als doppelt so viele wie 2006.'],
+  ['Der Biber ist zurück', 'Fast ausgerottet, leben heute wieder Zehntausende Biber in Deutschland und gestalten Feuchtgebiete.'],
+  ['Lachse im Rhein', 'Nach Jahrzehnten der Verschmutzung kehren Lachse dank Schutzprogrammen in den Rhein zurück.'],
+  ['Das FCKW-Verbot wirkt', 'Das Montreal-Protokoll gilt als eines der erfolgreichsten Umweltabkommen – alle UN-Staaten haben es unterzeichnet.'],
+];
+const BENEFITS = [
+  'Ein Verlangen nach einer Zigarette dauert meist nur wenige Minuten. Wenn du es aussitzt, wird es schwächer.',
+  'Entzugssymptome sind in den ersten drei Tagen am stärksten und lassen danach meist spürbar nach.',
+  'Laut WHO verbessern sich Kreislauf und Lungenfunktion schon 2 bis 12 Wochen nach dem Rauchstopp.',
+  'Eine große Cambridge-Auswertung (2023) zeigt: Schon 11 Minuten zügige Bewegung täglich senken das Risiko eines frühen Todes deutlich.',
+  'Die WHO empfiehlt Krafttraining an mindestens zwei Tagen pro Woche – du planst vier. Stark.',
+  'Helles Licht am Morgen stellt deine innere Uhr und hilft dir, abends früher müde zu werden.',
+  'Im Schlaf festigt dein Gehirn, was du tagsüber gelernt hast.',
+  'Schlafmangel steigert das Hungerhormon Ghrelin – guter Schlaf hilft dir also auch beim gesunden Essen.',
+  'Die DGE empfiehlt 5 Portionen Obst und Gemüse am Tag: 3 Portionen Gemüse, 2 Portionen Obst.',
+  'Schon leichter Flüssigkeitsmangel kann Konzentration und Stimmung dämpfen.',
+  'Ein kurzer Spaziergang nach dem Essen kann den Anstieg des Blutzuckers abmildern.',
+  'Bewegung an der frischen Luft hilft nachweislich gegen Stress und hebt die Stimmung.',
+  'Langsames Ausatmen aktiviert den Parasympathikus – dein Körper schaltet auf Ruhe.',
+  'Regelmäßige Schlafenszeiten sind für deinen Rhythmus fast so wichtig wie die Schlafdauer selbst.',
+];
+const STRETCHES = [
+  ['Nacken lösen', 'Kopf langsam zur rechten Schulter neigen, 20 Sekunden halten, dann links.', 40],
+  ['Schulterkreisen', 'Beide Schultern groß und langsam nach hinten kreisen. Ruhig atmen.', 30],
+  ['Brust öffnen', 'Hände hinter dem Rücken verschränken, Brust nach vorne, Schulterblätter zusammen.', 30],
+  ['Katze und Kuh', 'Im Vierfüßlerstand abwechselnd Rücken rund machen und sanft ins Hohlkreuz gehen.', 45],
+  ['Hüftbeuger', 'Großer Ausfallschritt, hinteres Knie ablegen, Hüfte sanft nach vorne schieben. Halbzeit Seite wechseln.', 60],
+  ['Vorbeuge', 'Im Stehen locker nach vorne hängen lassen, Knie leicht gebeugt. Langsam aufrollen.', 40],
+];
+const GYM_TYPES = ['Push', 'Pull', 'Beine', 'Oberkörper', 'Unterkörper', 'Ganzkörper', 'Cardio', 'Mobility'];
+const TRIGGERS = ['Kaffee', 'Stress', 'Nach dem Essen', 'Langeweile', 'Pause', 'Alkohol', 'Mit anderen', 'Sonstiges'];
+const MILESTONES = [
+  [20 / 60, 'Nach 20 Minuten', 'Herzfrequenz und Blutdruck sinken.'],
+  [12, 'Nach 12 Stunden', 'Das Kohlenmonoxid im Blut sinkt auf normales Niveau.'],
+  [24 * 14, 'Nach 2–12 Wochen', 'Kreislauf und Lungenfunktion verbessern sich.'],
+  [24 * 30, 'Nach 1–9 Monaten', 'Husten und Kurzatmigkeit lassen nach.'],
+  [24 * 365, 'Nach 1 Jahr', 'Das Risiko für koronare Herzkrankheit ist etwa halbiert.'],
+  [24 * 365 * 5, 'Nach 5–15 Jahren', 'Das Schlaganfallrisiko sinkt auf das eines Nichtrauchers.'],
+  [24 * 365 * 10, 'Nach 10 Jahren', 'Das Risiko, an Lungenkrebs zu sterben, ist etwa halbiert.'],
+  [24 * 365 * 15, 'Nach 15 Jahren', 'Das Risiko für koronare Herzkrankheit entspricht dem eines Nichtrauchers.'],
+];
+
+/* ---------- Garten & Gamification ---------- */
+const BEDS = [
+  { id: 'schlaf', name: 'Schlaf', plant: 'Mondblume', mult: 1, hint: 'Pünktlich ins Bett und genug Schlaf lassen sie wachsen.' },
+  { id: 'bewegung', name: 'Bewegung', plant: 'Eiche', mult: 2.5, hint: 'Jede Minute Spaziergang und jedes Training zählt.' },
+  { id: 'ernaehrung', name: 'Ernährung', plant: 'Kräuterbeet', mult: 1.5, hint: 'Wasser, Gemüse und Obst bringen neue Kräuter.' },
+  { id: 'rauchfrei', name: 'Rauchfrei', plant: 'Farn', mult: 0.8, hint: 'Jede rauchfreie Stunde lässt ihn wachsen.' },
+  { id: 'kopf', name: 'Kopf', plant: 'Seerosenteich', mult: 1.3, hint: 'Morgenroutine, Atemübungen und Stimmung füllen den Teich.' },
+];
+const STAGE_T = [0, 40, 120, 300, 600, 1000];
+const STAGE_N = ['Samen', 'Keimling', 'Jungpflanze', 'Wachsend', 'Kräftig', 'Ausgewachsen'];
+const RARE = [
+  ['Silbermondblume', '#D8DCEA'], ['Bergfarn', '#7FB39A'], ['Blauer Lotus', '#8FA8E0'], ['Wilder Thymian', '#C9A0D8'],
+  ['Nachtkerze', '#F1DDAE'], ['Ginkgo', '#D9C25A'], ['Edelweiß', '#EDEDE4'], ['Roter Ahorn', '#D9825A'],
+];
+const BIOMES = [
+  { name: 'Waldgarten', sky: '#18221E', h1: '#2A3A30', h2: '#34493A', h3: '#3F5845' },
+  { name: 'Zen-Steingarten', sky: '#1A1F22', h1: '#30383A', h2: '#3B4446', h3: '#4A5352' },
+  { name: 'Bergwiese', sky: '#182028', h1: '#33424A', h2: '#3A5040', h3: '#47604A' },
+  { name: 'Küstengarten', sky: '#17222A', h1: '#2C3F48', h2: '#3E5552', h3: '#5E5A44' },
+  { name: 'Waldlichtung', sky: '#141E19', h1: '#223326', h2: '#2C4232', h3: '#38523C' },
+];
+const RANKS = [[1, 'Keimling'], [5, 'Gärtner'], [10, 'Hüter'], [20, 'Waldmeister']];
+const lvlStart = n => 80 * (n - 1) * (n - 1);
+const levelOf = xp => Math.floor(Math.sqrt(xp / 80)) + 1;
+const rankOf = lvl => { let r = RANKS[0][1]; for (const [l, n] of RANKS) if (lvl >= l) r = n; return r; };
+const stageOf = (xp, mult) => { let s = 0; for (let i = 0; i < STAGE_T.length; i++) if (xp >= STAGE_T[i] * mult) s = i; return s; };
+function seasonOf(d) { const m = d.getMonth(); return m === 11 || m < 2 ? 'winter' : m < 5 ? 'fruehling' : m < 8 ? 'sommer' : 'herbst'; }
+const SEASON_N = { winter: 'Winter', fruehling: 'Frühling', sommer: 'Sommer', herbst: 'Herbst' };
+
+function sleepMin(d) { if (!d || !d.sleep.bed || !d.sleep.wake) return null; const m = (tmin(d.sleep.wake) - tmin(d.sleep.bed) + 1440) % 1440; return m || null; }
+const eveningM = t => (tmin(t) - 720 + 1440) % 1440; // Minuten ab 12 Uhr mittags
+function onTimeBed(d) { return !!(d && d.sleep.bed) && eveningM(d.sleep.bed) <= eveningM(S.settings.bed) + 15; }
+
+function smokeInfo() {
+  const q = S.smoke.quitAt; if (!q) return null;
+  const quit = new Date(q), now = new Date();
+  const slips = S.smoke.slips.map(s => new Date(s.at)).filter(d => d >= quit).sort((a, b) => a - b);
+  const runStart = slips.length ? slips[slips.length - 1] : quit;
+  const slipDays = new Set(slips.map(dk)).size;
+  const totalDays = Math.max(0, (now - quit) / 864e5);
+  const freeDays = Math.max(0, totalDays - slipDays);
+  const saved = freeDays * S.smoke.pricePerWeek / 7;
+  const spent = S.rewards.filter(r => r.redeemedAt).reduce((a, r) => a + Number(r.price || 0), 0);
+  return { quit, runStart, runMs: Math.max(0, now - runStart), freeDays, saved, spent, available: Math.max(0, saved - spent), cigs: freeDays * S.smoke.perDay, perDayEuro: S.smoke.pricePerWeek / 7, slipDays: new Set(slips.map(dk)) };
+}
+
+function dayXP(k, si) {
+  const x = { schlaf: 0, bewegung: 0, ernaehrung: 0, rauchfrei: 0, kopf: 0 };
+  const d = peek(k);
+  if (d) {
+    x.bewegung = Math.min(d.walk, 240) + d.gym.reduce((a, g) => a + 30 + Math.min(Number(g.min) || 0, 150) / 2, 0);
+    x.ernaehrung = Math.min(d.water, 4) * 10 + Math.min(d.veg, 10) * 5;
+    const sm = sleepMin(d);
+    if (sm) { if (onTimeBed(d)) x.schlaf += 20; if (sm >= S.settings.goals.sleepH * 60 - 15) x.schlaf += 15; else if (sm >= 360) x.schlaf += 5; }
+    x.kopf = (d.morning.water + d.morning.stretch + d.morning.light) * 5 + Math.min(d.stretchDone, 2) * 10 + Math.min(d.breaths, 3) * 5 + (d.mood ? 5 : 0);
+  }
+  if (si && !si.slipDays.has(k)) {
+    const start = parseDk(k), end = addDays(start, 1), now = new Date();
+    const a = Math.max(+start, +si.quit), b = Math.min(+end, +now);
+    if (b > a) x.rauchfrei = (b - a) / 864e5 * 25;
+    const cr = S.smoke.cravings.filter(c => dk(new Date(c.at)) === k).length;
+    x.rauchfrei += Math.min(cr, 5) * 5;
+  }
+  for (const i in x) x[i] = Math.round(x[i]);
+  return x;
+}
+
+let G = null; // berechneter Gesamtzustand
+function computeAll() {
+  const tk = todayK();
+  const si = smokeInfo();
+  let startK = dk(new Date(S.createdAt));
+  const keys = Object.keys(S.days).sort();
+  if (keys[0] && keys[0] < startK) startK = keys[0];
+  if (si) { const qk = dk(si.quit); if (qk < startK) startK = qk; }
+  const cum = { schlaf: 0, bewegung: 0, ernaehrung: 0, rauchfrei: 0, kopf: 0 };
+  const off = S.garden.offsets; const xpByDay = {}; let total = 0, seeds = 0;
+  for (let d = parseDk(startK); dk(d) <= tk; d = addDays(d, 1)) {
+    const k = dk(d), x = dayXP(k, si); xpByDay[k] = x;
+    for (const b of BEDS) {
+      if (cum[b.id] - off[b.id] >= STAGE_T[5] * b.mult && x[b.id] > 0) seeds++;
+      cum[b.id] += x[b.id]; total += x[b.id];
+    }
+  }
+  const beds = BEDS.map(b => {
+    const xp = cum[b.id] - off[b.id], s = stageOf(xp, b.mult);
+    const next = s < 5 ? STAGE_T[s + 1] * b.mult : null, prev = STAGE_T[s] * b.mult;
+    return { ...b, xp, stage: s, next, prev, pct: next ? (xp - prev) / (next - prev) : 1, bloom: s === 5 && (xpByDay[tk]?.[b.id] || 0) > 0, today: xpByDay[tk]?.[b.id] || 0 };
+  });
+  const level = levelOf(total);
+  // Statistiken
+  let onTime = 0, workouts = 0, walkMin = 0, waterGoal = 0, vegGoal = 0, morningDays = 0, moodDays = 0;
+  for (const k of keys) {
+    const d = peek(k); if (!d) continue;
+    if (onTimeBed(d) && sleepMin(d)) onTime++;
+    workouts += d.gym.length; walkMin += d.walk;
+    if (d.water >= S.settings.goals.water) waterGoal++;
+    if (d.veg >= S.settings.goals.veg) vegGoal++;
+    if (d.morning.water && d.morning.stretch && d.morning.light) morningDays++;
+    if (d.mood) moodDays++;
+  }
+  const st = { smokeDays: si ? si.freeDays : 0, runDays: si ? si.runMs / 864e5 : 0, onTime, workouts, walkMin, waterGoal, vegGoal, morningDays, moodDays, anyFull: beds.some(b => b.stage === 5), landscapes: S.garden.landscape };
+  const animals = [
+    { id: 'gluehwuermchen', name: 'Glühwürmchen', cond: '7 Nächte pünktlich im Bett', on: onTime >= 7, p: onTime / 7 },
+    { id: 'igel', name: 'Igel', cond: '30 Tage rauchfrei', on: st.smokeDays >= 30, p: st.smokeDays / 30 },
+    { id: 'rotkehlchen', name: 'Rotkehlchen', cond: '20 Trainings', on: workouts >= 20, p: workouts / 20 },
+    { id: 'frosch', name: 'Frosch', cond: '14 Tage Stimmung eingetragen', on: moodDays >= 14, p: moodDays / 14 },
+    { id: 'schmetterlinge', name: 'Schmetterlinge', cond: '14× Gemüseziel erreicht', on: vegGoal >= 14, p: vegGoal / 14 },
+    { id: 'eichhoernchen', name: 'Eichhörnchen', cond: '50 Stunden spaziert', on: walkMin >= 3000, p: walkMin / 3000 },
+  ];
+  const decor = [
+    { id: 'laterne', name: 'Steinlaterne', cond: 'Rang Gärtner (Level 5)', on: level >= 5 },
+    { id: 'bach', name: 'Bachlauf', cond: 'Rang Hüter (Level 10)', on: level >= 10 },
+    { id: 'bank', name: 'Gartenbank', cond: 'Rang Waldmeister (Level 20)', on: level >= 20 },
+  ];
+  const seedsTotal = seeds + S.garden.seedsBanked;
+  G = { tk, si, xpByDay, total, level, rank: rankOf(level), lvlPct: (total - lvlStart(level)) / (lvlStart(level + 1) - lvlStart(level)), toNext: lvlStart(level + 1) - total, beds, st, animals, decor, seedsEarnedNow: seeds, seeds: seedsTotal - S.garden.seedsSpent, allFull: beds.every(b => b.stage === 5), season: seasonOf(new Date()) };
+  G.event = seasonEvent();
+  checkBadges();
+  return G;
+}
+
+function seasonEvent() {
+  const now = new Date(), s = G.season, y = now.getFullYear(), m = now.getMonth();
+  let from, to;
+  if (s === 'winter') { const sy = m === 11 ? y : y - 1; from = new Date(sy, 11, 1); to = new Date(sy + 1, 2, 0); }
+  else if (s === 'fruehling') { from = new Date(y, 2, 1); to = new Date(y, 5, 0); }
+  else if (s === 'sommer') { from = new Date(y, 5, 1); to = new Date(y, 8, 0); }
+  else { from = new Date(y, 8, 1); to = new Date(y, 11, 0); }
+  let v = 0;
+  for (let d = new Date(from); d <= to && d <= now; d = addDays(d, 1)) {
+    const x = peek(dk(d)); if (!x) continue;
+    if (s === 'winter' && x.morning.water && x.morning.stretch && x.morning.light) v++;
+    if (s === 'fruehling' && x.veg >= S.settings.goals.veg) v++;
+    if (s === 'sommer') v += x.walk / 60;
+    if (s === 'herbst' && x.walk >= 30) v++;
+  }
+  const E = {
+    winter: ['Durch die dunklen Monate', 'Schaffe 45 komplette Morgenroutinen bis Ende Februar.', 45, 'Routinen', 'Winterlaterne'],
+    fruehling: ['Große Blüte', 'Erreiche 30-mal dein Gemüseziel bis Ende Mai.', 30, 'Tage', 'Kirschblüte'],
+    sommer: ['Lange Tage', 'Sammle 40 Stunden Spaziergang bis Ende August.', 40, 'Std', 'Sonnenblume'],
+    herbst: ['Goldenes Laub', 'Mach 25 Spaziergänge von mindestens 30 Minuten bis Ende November.', 25, 'Spaziergänge', 'Goldahorn'],
+  }[s];
+  return { id: `ev-${s}-${from.getFullYear()}`, title: E[0], desc: E[1], goal: E[2], unit: E[3], prize: E[4], v: Math.floor(v), to, done: v >= E[2] };
+}
+
+const BADGES = [
+  ['start', 'Rauchfrei-Start', st => !!S.smoke.quitAt],
+  ['r1', '1 Tag rauchfrei', st => st.smokeDays >= 1],
+  ['r3', '3 Tage rauchfrei', st => st.smokeDays >= 3],
+  ['r7', '1 Woche rauchfrei', st => st.smokeDays >= 7],
+  ['r30', '30 Tage rauchfrei', st => st.smokeDays >= 30],
+  ['r100', '100 Tage rauchfrei', st => st.smokeDays >= 100],
+  ['r365', 'Ein rauchfreies Jahr', st => st.smokeDays >= 365],
+  ['n7', '7 Nächte pünktlich', st => st.onTime >= 7],
+  ['n30', '30 Nächte pünktlich', st => st.onTime >= 30],
+  ['g1', 'Erstes Training', st => st.workouts >= 1],
+  ['g20', '20 Trainings', st => st.workouts >= 20],
+  ['g100', '100 Trainings', st => st.workouts >= 100],
+  ['w10', '10 Std spaziert', st => st.walkMin >= 600],
+  ['w50', '50 Std spaziert', st => st.walkMin >= 3000],
+  ['h7', '7× Wasserziel', st => st.waterGoal >= 7],
+  ['v7', '7× Gemüseziel', st => st.vegGoal >= 7],
+  ['m7', '7 Morgenroutinen', st => st.morningDays >= 7],
+  ['full', 'Erstes Beet ausgewachsen', st => st.anyFull],
+  ['land', 'Neue Landschaft', st => st.landscapes >= 1],
+];
+let newBadges = [];
+function checkBadges() {
+  for (const [id, name, fn] of BADGES) if (!S.badges[id] && fn(G.st)) { S.badges[id] = new Date().toISOString(); newBadges.push(name); }
+  if (G.event.done && !S.badges[G.event.id]) { S.badges[G.event.id] = new Date().toISOString(); newBadges.push('Event: ' + G.event.title); }
+  if (newBadges.length) { save(); const n = newBadges.splice(0); setTimeout(() => toast(n.length > 2 ? `${n.length} neue Samen im Herbarium` : 'Neuer Samen im Herbarium: ' + n.join(', ')), 300); }
+}
+
+/* ---------- Garten-Illustration ---------- */
+function gardenSVG(opts = {}) {
+  const w = 358, h = 300, s = G.season, bi = BIOMES[S.garden.landscape % BIOMES.length];
+  const st = Object.fromEntries(G.beds.map(b => [b.id, b])); const an = Object.fromEntries(G.animals.map(a => [a.id, a.on])); const de = Object.fromEntries(G.decor.map(a => [a.id, a.on]));
+  const leaf = s === 'herbst' ? '#B98A4A' : s === 'winter' ? '#6F8F7A' : s === 'fruehling' ? '#7FAF7E' : '#6F9675';
+  const leaf2 = s === 'herbst' ? '#C9703F' : s === 'winter' ? '#5F7F6A' : '#5F8466';
+  let g = `<svg viewBox="0 0 ${w} ${h}" ${opts.label ? `role="img" aria-label="${esc(opts.label)}"` : 'aria-hidden="true"'} style="display:block;width:100%;height:auto">`;
+  g += `<rect width="${w}" height="${h}" fill="${bi.sky}"/>`;
+  for (let i = 0; i < 14; i++) g += `<circle cx="${(i * 73) % w}" cy="${(i * 37) % 90 + 8}" r="${i % 3 ? .8 : 1.3}" fill="#E8E4D8" opacity=".5"/>`;
+  g += `<circle cx="300" cy="46" r="20" fill="#F1DDAE"/><circle cx="300" cy="46" r="32" fill="#F1DDAE" opacity=".12"/>`;
+  g += `<path d="M0 110 Q80 70 170 98 T358 86 V300 H0Z" fill="${bi.h1}"/>`;
+  g += `<path d="M0 140 Q110 108 220 132 T358 126 V300 H0Z" fill="${bi.h2}"/>`;
+  g += `<path d="M0 170 Q179 150 358 170 V300 H0Z" fill="${bi.h3}"/>`;
+  if (s === 'winter') g += `<path d="M0 170 Q179 150 358 170 L358 176 Q179 157 0 176Z" fill="#DDE5E8" opacity=".55"/>`;
+  if (de.bach) g += `<path d="M0 226 C40 220 70 236 110 232 S180 250 200 248" stroke="#557A82" stroke-width="7" fill="none" stroke-linecap="round" opacity=".9"/>`;
+  g += `<path d="M150 300 C160 260 200 230 190 170" stroke="#4A4536" stroke-width="16" fill="none" stroke-linecap="round"/>`;
+  // Teich – Kopf
+  const k = st.kopf.stage;
+  g += `<ellipse cx="246" cy="248" rx="54" ry="18" fill="#3E5E66"/><ellipse cx="246" cy="246" rx="48" ry="14" fill="#557A82"/>`;
+  const pads = [[226, 244], [262, 250], [246, 238], [274, 242], [214, 250]];
+  for (let i = 0; i < k; i++) g += `<ellipse cx="${pads[i][0]}" cy="${pads[i][1]}" rx="9" ry="3.6" fill="${leaf2}"/>`;
+  if (k >= 3) { if (st.kopf.bloom) g += `<circle cx="228" cy="241" r="9" fill="#F3E3E0" opacity=".18"/>`; g += `<circle cx="228" cy="241" r="3.6" fill="#F3E3E0"/>`; }
+  if (k >= 5) g += `<circle cx="264" cy="247" r="3.2" fill="#E7B8C8"/>`;
+  if (an.frosch) g += `<ellipse cx="262" cy="247" rx="5" ry="3.4" fill="#7FB36A"/><circle cx="259.5" cy="244.5" r="1.6" fill="#7FB36A"/><circle cx="264.5" cy="244.5" r="1.6" fill="#7FB36A"/>`;
+  // Mondblume – Schlaf
+  const sl = st.schlaf.stage;
+  g += `<ellipse cx="70" cy="190" rx="40" ry="11" fill="#54422F"/>`;
+  if (sl === 0) g += `<circle cx="70" cy="186" r="2.5" fill="#8C7255"/>`;
+  else {
+    const hh = 6 + sl * 7;
+    g += `<path d="M70 188 V${188 - hh}" stroke="#8FBF98" stroke-width="3" stroke-linecap="round"/>`;
+    if (sl >= 2) g += `<path d="M70 ${184 - hh / 3} c-8 -2 -12 -7 -12 -12 c7 1 12 6 12 12z" fill="${leaf}"/><path d="M70 ${180 - hh / 2} c8 -2 12 -7 12 -12 c-7 1 -12 6 -12 12z" fill="${leaf2}"/>`;
+    if (sl >= 3) { const r = 2 + sl * 1.5; if (st.schlaf.bloom) g += `<circle cx="70" cy="${188 - hh}" r="${r * 2.4}" fill="#E9E2F2" opacity=".15"/>`; g += `<circle cx="70" cy="${188 - hh}" r="${r}" fill="#E9E2F2"/><circle cx="70" cy="${188 - hh}" r="${r / 2.4}" fill="#F1DDAE"/>`; }
+  }
+  // Eiche – Bewegung
+  const be = st.bewegung.stage;
+  g += `<ellipse cx="292" cy="186" rx="40" ry="11" fill="#54422F"/>`;
+  if (be === 0) g += `<circle cx="292" cy="182" r="2.5" fill="#8C7255"/>`;
+  else {
+    const th = 6 + be * 8, tw = 2 + be, cr = 4 + be * 5;
+    g += `<path d="M292 184 V${184 - th}" stroke="#6B5038" stroke-width="${tw}" stroke-linecap="round"/>`;
+    g += `<circle cx="292" cy="${184 - th - cr * .5}" r="${cr}" fill="${leaf}"/><circle cx="${292 - cr * .6}" cy="${184 - th}" r="${cr * .62}" fill="${leaf2}"/>`;
+    if (be >= 3) g += `<circle cx="${292 + cr * .6}" cy="${184 - th + 2}" r="${cr * .55}" fill="${leaf2}"/>`;
+    if (s === 'winter') g += `<path d="M${292 - cr} ${184 - th - cr * .5} a${cr} ${cr * .7} 0 0 1 ${cr * 2} 0z" fill="#DDE5E8" opacity=".7"/>`;
+    if (s === 'fruehling' && be >= 3) for (let i = 0; i < 6; i++) g += `<circle cx="${292 + Math.cos(i) * cr * .7}" cy="${184 - th - cr * .5 + Math.sin(i * 2) * cr * .5}" r="1.8" fill="#E7B8C8"/>`;
+    if (st.bewegung.bloom) g += `<circle cx="292" cy="${184 - th - cr * .5}" r="${cr + 8}" fill="#F1DDAE" opacity=".08"/>`;
+    if (an.rotkehlchen) { const by = 184 - th - cr * .5 - cr + 2; g += `<ellipse cx="${300}" cy="${by}" rx="5" ry="4" fill="#7A5A44"/><circle cx="${302}" cy="${by + 1}" r="2.4" fill="#D9825A"/><circle cx="${304}" cy="${by - 3}" r="2.4" fill="#7A5A44"/>`; }
+  }
+  if (an.eichhoernchen) g += `<path d="M262 196 c-8 -2 -10 -12 -4 -16 c4 4 6 9 4 16z" fill="#B0703F"/><ellipse cx="266" cy="194" rx="4" ry="5" fill="#B0703F"/><circle cx="268" cy="188" r="2.8" fill="#B0703F"/>`;
+  // Kräuter – Ernährung
+  const er = st.ernaehrung.stage;
+  g += `<ellipse cx="72" cy="250" rx="48" ry="13" fill="#54422F"/>`;
+  if (er === 0) g += `<circle cx="72" cy="246" r="2.5" fill="#8C7255"/>`;
+  for (let i = 0; i < er * 2; i++) {
+    const x = 36 + (i * 72 / Math.max(1, er * 2 - 1)), hh = 7 + er * 2.4 + (i % 3) * 2;
+    g += `<path d="M${x} 248 q${i % 2 ? 2 : -2} ${-hh / 2} 0 ${-hh}" stroke="${i % 2 ? leaf : '#8FBF98'}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+    if (er >= 4 && i % 3 === 0) g += `<circle cx="${x}" cy="${248 - hh - 2}" r="2" fill="${st.ernaehrung.bloom ? '#C9A0D8' : '#A88EC0'}"/>`;
+  }
+  if (an.schmetterlinge) g += `<path d="M110 222 c-6 -6 -8 2 0 2 c-8 0 -6 8 0 2" fill="#E8B08C"/><path d="M110 222 c6 -6 8 2 0 2 c8 0 6 8 0 2" fill="#E8B08C"/><path d="M40 216 c-5 -5 -6 2 0 2 c-6 0 -5 6 0 2 c5 4 6 -2 0 -2 c6 0 5 -7 0 -2z" fill="#D8DCEA"/>`;
+  // Farn – Rauchfrei
+  const rf = st.rauchfrei.stage;
+  g += `<ellipse cx="160" cy="214" rx="38" ry="11" fill="#4A3A2A"/>`;
+  if (rf === 0) g += `<circle cx="160" cy="210" r="2.5" fill="#8C7255"/>`;
+  else {
+    const n = rf + 1, L = 10 + rf * 6;
+    for (let i = 0; i < n; i++) {
+      const a = -Math.PI / 2 + (i - (n - 1) / 2) * 0.42, ex = 160 + Math.cos(a) * L, ey = 212 + Math.sin(a) * L;
+      const cx = 160 + Math.cos(a - 0.3) * L * .6, cy = 212 + Math.sin(a - 0.3) * L * .6;
+      g += `<path d="M160 212 Q${cx} ${cy} ${ex} ${ey}" stroke="${i % 2 ? leaf2 : leaf}" stroke-width="${2 + rf * .5}" fill="none" stroke-linecap="round"/>`;
+    }
+    if (st.rauchfrei.bloom) g += `<circle cx="160" cy="${212 - L * .6}" r="${L * .8}" fill="#B5D9BC" opacity=".07"/>`;
+  }
+  // Seltene Pflanzen
+  S.garden.rare.forEach((r, i) => { const x = 18 + i * 42, col = (RARE.find(z => z[0] === r) || ['', '#E6E2D6'])[1]; g += `<path d="M${x} 292 V280" stroke="#5F8466" stroke-width="2"/><circle cx="${x}" cy="278" r="3.6" fill="${col}"/>`; });
+  if (de.laterne) g += `<rect x="118" y="168" width="4" height="22" fill="#6F6A5C"/><rect x="112" y="158" width="16" height="12" rx="2" fill="#6F6A5C"/><rect x="115" y="161" width="10" height="6" fill="#F1DDAE"/><circle cx="120" cy="164" r="14" fill="#F1DDAE" opacity=".1"/>`;
+  if (de.bank) g += `<rect x="196" y="184" width="30" height="4" rx="1" fill="#8C7255"/><rect x="196" y="176" width="30" height="3" rx="1" fill="#8C7255"/><rect x="198" y="188" width="3" height="7" fill="#6B5038"/><rect x="221" y="188" width="3" height="7" fill="#6B5038"/>`;
+  if (an.igel) g += `<ellipse cx="120" cy="272" rx="11" ry="7" fill="#6B5038"/><path d="M110 270 l2 -6 l3 5 l3 -7 l3 6 l3 -6 l3 6" stroke="#4A3A2A" stroke-width="2" fill="none"/><circle cx="131" cy="273" r="1.4" fill="#E6E2D6"/>`;
+  if (an.gluehwuermchen) for (let i = 0; i < 9; i++) { const x = 30 + (i * 97) % 300, y = 120 + (i * 53) % 90; g += `<circle cx="${x}" cy="${y}" r="5" fill="#F1E08A" opacity=".15"/><circle cx="${x}" cy="${y}" r="1.6" fill="#F1E08A"/>`; }
+  if (s === 'herbst') for (let i = 0; i < 7; i++) g += `<path d="M${40 + i * 45} ${130 + (i * 29) % 60} q4 -4 8 0 q-4 4 -8 0z" fill="#C9703F" opacity=".8"/>`;
+  if (s === 'winter') for (let i = 0; i < 26; i++) g += `<circle cx="${(i * 61) % w}" cy="${(i * 43) % 200 + 20}" r="1.6" fill="#EEF2F3" opacity=".7"/>`;
+  g += `</svg>`;
+  return g;
+}
+
+/* ---------- Icons ---------- */
+const I = {
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  moon: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+  leaf: '<path d="M12 21v-8M12 13c-4 0-6-3-6-7 4 0 6 3 6 7zM12 11c0-4 2-7 6-7 0 4-2 7-6 7z"/>',
+  smoke: '<path d="M3 15h14v3H3zM20 15v3M18 6c0 3 2 3 2 6"/>',
+  chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+  walk: '<circle cx="13" cy="4" r="2"/><path d="M9 21l2-6 3 2v4M11 15l-1-5 4-2 3 4h3M10 10l-3 3"/>',
+  dumbbell: '<path d="M3 12h2M19 12h2M6 8v8M18 8v8M9 10v4M15 10v4M9 12h6"/>',
+  drop: '<path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/>',
+  carrot: '<path d="M5 19C5 10 11 5 20 4c-1 9-6 15-15 15zM5 19l7-7"/>',
+  bed: '<path d="M3 18v-8M21 18v-5a3 3 0 0 0-3-3h-8v6M3 14h18M6.5 12a1.5 1.5 0 1 0 0-.01"/>',
+  heart: '<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>',
+  x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+  left: '<path d="M15 5l-7 7 7 7"/>',
+  right: '<path d="M9 5l7 7-7 7"/>',
+  check: '<path d="M5 12l5 5 9-10"/>',
+  bell: '<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/>',
+  star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+};
+const ic = (n, size = 22, col = 'currentColor', sw = 1.8) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${col}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
+
+/* ---------- Navigation & Rendern ---------- */
+let tab = 'heute', sel = todayK(), chart = { metric: 'walk', range: '7' };
+const TABS = [['heute', 'Heute', 'sun'], ['garten', 'Garten', 'leaf'], ['rauchfrei', 'Rauchfrei', 'smoke'], ['verlauf', 'Verlauf', 'chart'], ['mehr', 'Mehr', 'menu']];
+function renderTabs() {
+  document.getElementById('tabs').innerHTML = TABS.map(([id, l, i]) => `<button type="button" data-a="tab" data-v="${id}" ${tab === id ? 'aria-current="page"' : ''}>${ic(i)}${l}</button>`).join('');
+}
+function render() {
+  if (!S.onboarded) { document.getElementById('app').innerHTML = renderOnboarding(); document.querySelector('nav.tabs').style.display = 'none'; return; }
+  document.querySelector('nav.tabs').style.display = '';
+  computeAll();
+  const v = { heute: renderHeute, garten: renderGarten, rauchfrei: renderRauchfrei, verlauf: renderVerlauf, mehr: renderMehr }[tab]();
+  document.getElementById('app').innerHTML = v;
+  renderTabs();
+  if (tab === 'verlauf') bindChart();
+}
+
+function durStr(ms) {
+  const m = Math.floor(ms / 6e4), d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60), mi = m % 60;
+  if (d >= 1) return `${d} ${d === 1 ? 'Tag' : 'Tage'} ${h} Std`;
+  return `${h} Std ${mi} Min`;
+}
+function nextMilestone(hours) { for (const ms of MILESTONES) if (hours < ms[0]) return ms; return null; }
+function goalBar(v, goal, gold) { const p = clamp(v / goal, 0, 1) * 100; return `<div class="bar${gold ? ' gold' : ''}"><i style="width:${p}%"></i></div>`; }
+function extraTxt(v, goal, unit, dec = 0) { return v > goal ? `<span class="extra">+${fmt(v - goal, dec)} ${unit} extra</span>` : ''; }
+
+function renderHeute() {
+  const d = day(sel); const isToday = sel === G.tk; const dt = parseDk(sel); const now = new Date(); const g = S.settings.goals;
+  const hr = now.getHours();
+  const greet = !isToday ? 'Eintrag nachtragen' : hr < 11 ? 'Guten Morgen' : hr < 17 ? 'Schön, dass du da bist' : 'Guten Abend';
+  const name = S.settings.name ? `, ${esc(S.settings.name)}` : '';
+  const si = G.si;
+  const wk = weekStart(dt); let gymWeek = 0; for (let i = 0; i < 7; i++) { const x = peek(dk(addDays(wk, i))); if (x) gymWeek += x.gym.length; }
+  const sm = sleepMin(d);
+  const news = todaysNews(); const benefit = BENEFITS[(Math.floor(+parseDk(G.tk) / 864e5)) % BENEFITS.length];
+  const bedM = tmin(S.settings.bed), wind = tstr(bedM - S.settings.windDownMin);
+  const backupDue = !S.backup.lastAt ? Object.keys(S.days).length >= 3 : (Date.now() - new Date(S.backup.lastAt)) > 7 * 864e5;
+  const ms = si ? nextMilestone(si.runMs / 36e5) : null;
+  const todayXP = Object.values(G.xpByDay[G.tk] || {}).reduce((a, c) => a + c, 0);
+
+  return `
+  <header class="top">
+    <div class="between"><div class="eyebrow">${fmtLong(dt)}</div>
+      <div class="daynav"><button class="iconbtn" data-a="dayPrev" aria-label="Vorheriger Tag">${ic('left')}</button><button class="iconbtn" data-a="dayNext" aria-label="Nächster Tag" ${isToday ? 'disabled' : ''}>${ic('right')}</button></div></div>
+    <h1>${greet}${isToday ? name : ''}.</h1>
+    ${isToday ? `<p class="sub">${si ? `Tag ${Math.floor(si.runMs / 864e5) + 1} deines neuen Rhythmus.` : 'Dein neuer Rhythmus beginnt.'}</p>` : `<button class="btn ghost small" data-a="dayToday" style="align-self:flex-start">Zurück zu heute</button>`}
+  </header>
+  <div class="section">
+    ${backupDue ? `<div class="banner"><div>Sichere deine Daten: Eine Backup-Datei schützt deinen Fortschritt, falls der Browser-Speicher geleert wird.</div><button class="btn terra small" data-a="export">Backup speichern</button></div>` : ''}
+    <div class="card" style="padding:0;overflow:hidden" data-a="tab" data-v="garten" role="link" tabindex="0" aria-label="Zum Garten">
+      ${gardenSVG({ label: 'Dein Garten' })}
+      <div style="padding:14px 18px 18px" class="stack">
+        <div class="between"><h2>Dein Garten</h2><span style="font-weight:700;color:var(--acc);font-size:14px">Level ${G.level} · ${G.rank}</span></div>
+        ${goalBar(G.lvlPct, 1)}
+        <div class="muted">Heute ${todayXP} XP · noch ${G.toNext} XP bis Level ${G.level + 1}</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row">${ic('sun', 22, 'var(--terra)')}<h2>Morgenroutine</h2><span class="muted" style="margin-left:auto">+15 XP</span></div>
+      <label class="check"><input type="checkbox" data-c="morning" data-k="water" ${d.morning.water ? 'checked' : ''}> Großes Glas Wasser trinken</label>
+      <label class="check"><input type="checkbox" data-c="morning" data-k="stretch" ${d.morning.stretch ? 'checked' : ''}> 5 Minuten dehnen</label>
+      <label class="check"><input type="checkbox" data-c="morning" data-k="light" ${d.morning.light ? 'checked' : ''}> Helles Licht an, kurz ans Fenster</label>
+      <button class="btn" data-a="stretch">Dehnroutine starten · 5 Min</button>
+    </div>
+
+    ${isToday ? `<div class="card soft">
+      <div class="eyebrow" style="color:var(--acc)">Gute Nachricht des Tages</div>
+      <h3 style="font-family:var(--serif);font-weight:400;font-size:20px">${esc(news.title)}</h3>
+      <p style="color:var(--ink2)">${esc(news.text)}</p>
+      ${news.url ? `<a href="${esc(news.url)}" target="_blank" rel="noopener" style="min-height:44px;display:flex;align-items:center;font-weight:700">Mehr lesen${news.source ? ` bei ${esc(news.source)}` : ''}${news.lang === 'en' ? ' (Englisch)' : ''}</a>` : ''}
+    </div>
+    <div class="card"><div class="eyebrow" style="color:var(--acc)">Wusstest du?</div><p>${esc(benefit)}</p></div>` : ''}
+
+    ${si ? `<div class="card deep">
+      <div class="between"><span class="eyebrow" style="color:#CFDCCB">Rauchfrei seit</span><span style="color:var(--sun);font-weight:700;font-size:14px">${fmt(si.saved, 2)} € gespart</span></div>
+      <div class="big" id="liveRun">${durStr(si.runMs)}</div>
+      ${ms ? `<p style="color:#E3E9DF;font-size:15px">Nächster Meilenstein (${ms[1].replace('Nach ', 'nach ')}): ${esc(ms[2])}</p>` : ''}
+      <button class="btn line" data-a="sos" style="border-color:#CFDCCB;color:var(--head)">Verlangen? SOS · 3 Min</button>
+    </div>` : ''}
+
+    <h2 style="margin:8px 4px 0">Ziele ${isToday ? 'für heute' : 'an diesem Tag'}</h2>
+
+    <div class="card goal">
+      <div class="head">${ic('walk', 22, 'var(--acc)')}<h3>Spaziergang</h3><span class="muted" style="margin-left:auto">Ziel ${g.walk} Min</span></div>
+      <div class="between"><span class="num">${d.walk} Min</span>${extraTxt(d.walk, g.walk, 'Min')}</div>
+      ${goalBar(d.walk, g.walk, d.walk > g.walk)}
+      <div class="row" style="flex-wrap:wrap">
+        <button class="btn ghost small" data-a="add" data-f="walk" data-n="10">+10</button>
+        <button class="btn ghost small" data-a="add" data-f="walk" data-n="15">+15</button>
+        <button class="btn ghost small" data-a="add" data-f="walk" data-n="30">+30</button>
+        <label class="sr" for="walkIn">Minuten Spaziergang</label>
+        <input id="walkIn" class="" style="width:78px;min-height:44px;border-radius:12px;border:1.5px solid var(--line);background:#141B17;color:var(--ink);text-align:center;font-weight:700" type="number" inputmode="numeric" min="0" step="1" value="${d.walk}" data-c="num" data-f="walk">
+      </div>
+    </div>
+
+    <div class="card goal">
+      <div class="head">${ic('dumbbell', 22, 'var(--acc)')}<h3>Gym</h3><span class="muted" style="margin-left:auto">${gymWeek} / ${g.gymPerWeek} diese Woche</span></div>
+      ${goalBar(gymWeek, g.gymPerWeek, gymWeek > g.gymPerWeek)}
+      ${d.gym.length ? `<div class="list">${d.gym.map(x => `<div class="item"><div><b>${esc(x.type)}</b> · ${x.min} Min${x.note ? `<div class="muted">${esc(x.note)}</div>` : ''}</div><button class="iconbtn" data-a="gymDel" data-id="${x.id}" aria-label="Training löschen">${ic('trash', 20)}</button></div>`).join('')}</div>` : `<p class="muted">Noch kein Training ${isToday ? 'heute' : 'an diesem Tag'}.</p>`}
+      <button class="btn line" data-a="gymAdd">Training eintragen</button>
+    </div>
+
+    <div class="grid2">
+      <div class="card goal" style="padding:16px">
+        <div class="head">${ic('drop', 20, 'var(--acc)')}<h3>Wasser</h3></div>
+        <span class="num">${fmt(d.water, 2)} l</span>
+        <div class="muted">Ziel ${fmt(g.water, 1)} l ${extraTxt(d.water, g.water, 'l', 2)}</div>
+        ${goalBar(d.water, g.water, d.water > g.water)}
+        <div class="row"><button class="btn ghost small" style="flex:1;padding:0" data-a="add" data-f="water" data-n="-0.25" aria-label="0,25 Liter weniger">−</button><button class="btn ghost small" style="flex:2;padding:0" data-a="add" data-f="water" data-n="0.25">+0,25</button></div>
+      </div>
+      <div class="card goal" style="padding:16px">
+        <div class="head">${ic('carrot', 20, 'var(--acc)')}<h3>Obst &amp; Gemüse</h3></div>
+        <span class="num">${d.veg} Port.</span>
+        <div class="muted">Ziel ${g.veg} ${extraTxt(d.veg, g.veg, '')}</div>
+        ${goalBar(d.veg, g.veg, d.veg > g.veg)}
+        <div class="row"><button class="btn ghost small" style="flex:1;padding:0" data-a="add" data-f="veg" data-n="-1" aria-label="Eine Portion weniger">−</button><button class="btn ghost small" style="flex:2;padding:0" data-a="add" data-f="veg" data-n="1">+1</button></div>
+      </div>
+    </div>
+
+    <div class="card goal">
+      <div class="head">${ic('bed', 22, 'var(--acc)')}<h3>Schlaf ${isToday ? 'letzte Nacht' : 'in der Nacht davor'}</h3><span class="muted" style="margin-left:auto">Ziel ${S.settings.bed}–${S.settings.wake}</span></div>
+      <div class="grid2">
+        <label class="field">Ins Bett<input type="time" value="${d.sleep.bed}" data-c="sleep" data-k="bed"></label>
+        <label class="field">Aufgestanden<input type="time" value="${d.sleep.wake}" data-c="sleep" data-k="wake"></label>
+      </div>
+      ${sm ? `<div class="between"><span class="num">${Math.floor(sm / 60)} Std ${pad(sm % 60)}</span><span class="muted">${onTimeBed(d) ? 'Pünktlich im Bett' : 'Später als geplant'}</span></div>${goalBar(sm, g.sleepH * 60)}` : `<button class="btn ghost small" data-a="sleepPlan">Wie geplant (${S.settings.bed}–${S.settings.wake})</button>`}
+    </div>
+
+    <div class="card">
+      <div class="row">${ic('heart', 22, 'var(--acc)')}<h3>Wie geht es dir?</h3></div>
+      <div class="mood">${['mies', 'eher schlecht', 'okay', 'gut', 'super'].map((l, i) => `<button type="button" data-a="mood" data-n="${i + 1}" aria-pressed="${d.mood === i + 1}"><span style="font-size:17px">${i + 1}</span>${l}</button>`).join('')}</div>
+    </div>
+
+    ${isToday ? `<div class="card">
+      <div class="row">${ic('moon', 22, 'var(--acc)')}<h2>Heute Abend</h2></div>
+      <div class="grid3">
+        <div><div class="num">${wind}</div><div class="muted">Runterfahren</div></div>
+        <div><div class="num">${S.settings.bed}</div><div class="muted">Licht aus</div></div>
+        <div><div class="num">${S.settings.wake}</div><div class="muted">Aufstehen</div></div>
+      </div>
+      <p class="muted">Ab ${wind}: Bildschirm dimmen, kein Koffein mehr, Licht runter.</p>
+    </div>` : ''}
+  </div>`;
+}
+
+function todaysNews() {
+  const pool = [...(S.news.remote || []).filter(n => n && n.title), ...GOOD_NEWS.map(([title, text]) => ({ title, text }))];
+  if (!S.news.order.length || S.news.order.length !== pool.length) {
+    // gemischte Reihenfolge, damit sich nichts wiederholt, bis alle gezeigt wurden
+    const idx = pool.map((_, i) => i); for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+    S.news.order = idx; S.news.base = G.tk; save();
+  }
+  const n = Math.round((parseDk(G.tk) - parseDk(S.news.base || G.tk)) / 864e5);
+  // aktuelle Nachrichten (remote) bevorzugen, wenn vorhanden
+  const fresh = (S.news.remote || []).filter(x => x && x.title && x.date && (Date.now() - new Date(x.date)) < 7 * 864e5);
+  if (fresh.length) return fresh[n % fresh.length];
+  return pool[S.news.order[((n % pool.length) + pool.length) % pool.length]] || pool[0];
+}
+
+function renderGarten() {
+  const bi = BIOMES[S.garden.landscape % BIOMES.length]; const round = Math.floor(S.garden.landscape / BIOMES.length);
+  const ev = G.event; const bonsai = clamp(G.st.smokeDays / 365, 0, 1);
+  const rareLeft = RARE.filter(r => !S.garden.rare.includes(r[0]));
+  return `
+  <header class="top">
+    <div class="eyebrow">${esc(bi.name)}${round ? ' ' + 'I'.repeat(round + 1) : ''} · ${SEASON_N[G.season]}</div>
+    <h1>Dein Garten</h1>
+    <p class="sub">Jede gesunde Entscheidung lässt etwas wachsen.</p>
+  </header>
+  <div class="section">
+    <div class="card" style="padding:0;overflow:hidden">${gardenSVG({ label: 'Garten mit fünf Beeten: Schlaf, Bewegung, Ernährung, Rauchfrei und Kopf' })}</div>
+    <div class="card">
+      <div class="between"><h2>Level ${G.level} · ${G.rank}</h2><span class="muted">${fmt(G.total)} XP</span></div>
+      ${goalBar(G.lvlPct, 1)}
+      <div class="muted">Noch ${G.toNext} XP bis Level ${G.level + 1}. Ränge: Keimling → Gärtner (5) → Hüter (10) → Waldmeister (20)</div>
+    </div>
+
+    <h2 style="margin:8px 4px 0">Deine Beete</h2>
+    ${G.beds.map(b => `<div class="card" style="padding:14px 16px;gap:8px">
+      <div class="between"><h3>${b.name} · ${b.plant}</h3><span style="font-size:13px;font-weight:700;color:var(--acc)">${STAGE_N[b.stage]}</span></div>
+      ${goalBar(b.pct, 1, b.stage === 5)}
+      <div class="muted">${b.stage === 5 ? (b.bloom ? 'Blüht heute und wirft einen Samen ab.' : 'Ausgewachsen – blüht an jedem aktiven Tag und wirft Samen ab.') : `${Math.round(b.xp - b.prev)} / ${Math.round(b.next - b.prev)} XP bis ${STAGE_N[b.stage + 1]} · ${esc(b.hint)}`}${b.today ? ` · heute +${b.today} XP` : ''}</div>
+    </div>`).join('')}
+
+    ${G.allFull ? `<div class="card deep"><h2>Alle Beete ausgewachsen</h2><p>Dein Garten kommt in die Galerie, deine Samen bleiben. Danach beginnst du in einer neuen Landschaft: ${esc(BIOMES[(S.garden.landscape + 1) % BIOMES.length].name)}.</p><button class="btn" data-a="prestige">Neue Landschaft beginnen</button></div>` : ''}
+
+    <div class="card soft">
+      <div class="eyebrow" style="color:var(--acc)">${SEASON_N[G.season]}-Event · bis ${G.event.to.getDate()}.${G.event.to.getMonth() + 1}.</div>
+      <h2>${esc(ev.title)}</h2>
+      <p style="color:var(--ink2)">${esc(ev.desc)} Belohnung: ${esc(ev.prize)} im Herbarium.</p>
+      ${goalBar(ev.v, ev.goal, ev.done)}
+      <div class="muted">${Math.min(ev.v, ev.goal)} / ${ev.goal} ${ev.unit}${ev.done ? ' · geschafft!' : ''}</div>
+    </div>
+
+    <div class="card">
+      <div class="between"><h2>Samen</h2><span class="num">${G.seeds}</span></div>
+      <p class="muted">Ausgewachsene Pflanzen werfen an aktiven Tagen Samen ab. Für 25 Samen pflanzt du eine seltene Sorte.</p>
+      ${rareLeft.length ? `<div class="list">${rareLeft.slice(0, 4).map(r => `<div class="item"><div class="row"><span style="width:14px;height:14px;border-radius:50%;background:${r[1]};display:inline-block"></span>${r[0]}</div><button class="btn small ${G.seeds >= 25 ? '' : 'ghost'}" data-a="plantRare" data-v="${esc(r[0])}" ${G.seeds >= 25 ? '' : 'disabled'}>25 Samen</button></div>`).join('')}</div>` : '<p>Du hast alle seltenen Sorten gepflanzt.</p>'}
+      ${S.garden.rare.length ? `<div class="muted">Gepflanzt: ${S.garden.rare.map(esc).join(', ')}</div>` : ''}
+    </div>
+
+    <div class="card">
+      <h2>Besucher</h2>
+      <div class="list">${G.animals.map(a => `<div class="item"><div><b style="color:${a.on ? 'var(--head)' : 'var(--mute)'}">${a.name}</b><div class="muted">${a.on ? 'lebt jetzt in deinem Garten' : a.cond}</div></div>${a.on ? ic('check', 20, 'var(--acc)', 2.4) : `<span class="muted">${Math.floor(clamp(a.p, 0, 1) * 100)} %</span>`}</div>`).join('')}</div>
+    </div>
+
+    <div class="card">
+      <h2>Bonsai · dein rauchfreies Jahr</h2>
+      <p class="muted">Er wächst langsam mit jedem rauchfreien Tag. Nach 365 Tagen ist er die seltenste Pflanze im Herbarium.</p>
+      ${goalBar(bonsai, 1, true)}
+      <div class="muted">${Math.floor(G.st.smokeDays)} / 365 Tage</div>
+    </div>
+
+    <div class="card">
+      <h2>Deko</h2>
+      <div class="list">${G.decor.map(a => `<div class="item"><div><b style="color:${a.on ? 'var(--head)' : 'var(--mute)'}">${a.name}</b><div class="muted">${a.cond}</div></div>${a.on ? ic('check', 20, 'var(--acc)', 2.4) : ''}</div>`).join('')}</div>
+    </div>
+
+    <div class="card">
+      <div class="between"><h2>Herbarium</h2><span class="muted">${Object.keys(S.badges).length} Samen gesammelt</span></div>
+      <div class="badges">${BADGES.map(([id, name]) => `<div class="badge ${S.badges[id] ? 'on' : ''}"><div class="b">${S.badges[id] ? ic('leaf', 26, 'var(--accHi)') : ''}</div>${esc(name)}</div>`).join('')}
+      ${Object.keys(S.badges).filter(k => k.startsWith('ev-')).map(k => `<div class="badge on"><div class="b">${ic('star', 26, 'var(--gold)')}</div>${esc(SEASON_N[k.split('-')[1]] + '-Event ' + k.split('-')[2])}</div>`).join('')}</div>
+    </div>
+
+    ${S.garden.gallery.length ? `<div class="card"><h2>Galerie</h2>${S.garden.gallery.map(x => `<div class="item"><b>${esc(x.name)}</b><span class="muted">${new Date(x.at).toLocaleDateString('de-DE')}</span></div>`).join('')}</div>` : ''}
+  </div>`;
+}
+
+function renderRauchfrei() {
+  const si = G.si;
+  if (!si) return `<header class="top"><h1>Rauchfrei</h1><p class="sub">Leg deinen Rauchstopp fest.</p></header><div class="section"><div class="card"><button class="btn" data-a="quitNow">Ich bin ab jetzt rauchfrei</button></div></div>`;
+  const hours = si.runMs / 36e5;
+  const cr = S.smoke.cravings; const trig = {}; cr.forEach(c => { if (c.trigger) trig[c.trigger] = (trig[c.trigger] || 0) + 1; });
+  const topT = Object.entries(trig).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  let current = MILESTONES.findIndex(m => hours < m[0]); if (current < 0) current = MILESTONES.length;
+  return `
+  <div style="background:var(--deep);border-radius:0 0 32px 32px;padding:calc(34px + env(safe-area-inset-top)) 22px 24px;display:flex;flex-direction:column;gap:10px">
+    <div class="eyebrow" style="color:#CFDCCB">Rauchfrei seit ${si.runStart.toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' })}, ${pad(si.runStart.getHours())}:${pad(si.runStart.getMinutes())}</div>
+    <h1 style="font-size:44px" id="liveRun2">${durStr(si.runMs)}</h1>
+    <p style="color:#E3E9DF">${hours < 72 ? 'Die ersten drei Tage sind die schwersten. Du bist mittendrin – jede Stunde zählt.' : hours < 24 * 28 ? 'Das Schlimmste ist überstanden. Das Verlangen wird jetzt Woche für Woche leiser.' : 'Du bist längst Nichtraucher. Bleib wachsam bei alten Auslösern.'}</p>
+    <div class="grid2" style="margin-top:6px">
+      <div style="background:var(--deep2);border-radius:18px;padding:14px"><div class="num" style="color:var(--sun)">${fmt(si.saved, 2)} €</div><div class="muted" style="color:#CFDCCB">gespart · ${fmt(si.perDayEuro * 365)} € im Jahr</div></div>
+      <div style="background:var(--deep2);border-radius:18px;padding:14px"><div class="num" style="color:var(--sun)">${fmt(si.cigs)}</div><div class="muted" style="color:#CFDCCB">Zigaretten nicht geraucht</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="card terra">
+      <h2>Verlangen? Es geht vorbei.</h2>
+      <p style="color:#D9C6B6">Ein Craving dauert meist nur wenige Minuten. Wähl, was dir jetzt hilft:</p>
+      <button class="btn terra" data-a="breathe">Atemübung · 3 Min</button>
+      <div class="grid2"><button class="btn terraLine small" data-a="game">Glühwürmchen fangen</button><button class="btn terraLine small" data-a="outside">Kurz rausgehen</button></div>
+      <button class="btn terraLine small" data-a="craving">Verlangen notieren</button>
+      <div class="muted" style="color:#D9C6B6">${cr.length} Cravings überstanden${topT.length ? ' · häufigste Auslöser: ' + topT.map(t => `${esc(t[0])} (${t[1]})`).join(', ') : ''}</div>
+    </div>
+
+    <div class="card">
+      <h2>Was dein Körper gerade tut</h2>
+      <div class="timeline">${MILESTONES.map((m, i) => {
+        const done = hours >= m[0], now = i === current; const prevH = i ? MILESTONES[i - 1][0] : 0;
+        const p = now ? clamp((hours - prevH) / (m[0] - prevH), 0, 1) : 0;
+        return `<div class="tl"><div class="rail"><div class="dot ${done ? 'done' : now ? 'now' : ''}">${done ? ic('check', 12, '#10180F', 3.5) : ''}</div>${i < MILESTONES.length - 1 ? `<div class="ln ${done ? 'done' : ''}"></div>` : ''}</div>
+        <div class="tx"><div style="font-size:13px;font-weight:700;color:${done || now ? 'var(--acc)' : 'var(--mute)'}">${m[1]}${done ? ' · geschafft' : now ? ` · noch ${durStr((m[0] - hours) * 36e5)}` : ''}</div><div style="font-size:15px;line-height:1.45">${m[2]}</div>${now ? `<div class="bar" style="margin-top:8px;height:6px"><i style="width:${p * 100}%"></i></div>` : ''}</div></div>`;
+      }).join('')}</div>
+      <div class="muted">Quelle: WHO</div>
+    </div>
+
+    <div class="card">
+      <div class="between"><h2>Belohnungsshop</h2><span class="muted">${fmt(si.available, 2)} € verfügbar</span></div>
+      ${S.rewards.map(r => {
+        const left = Math.max(0, r.price - si.available), days = Math.ceil(left / si.perDayEuro);
+        if (r.redeemedAt) return `<div class="item"><div><b>${esc(r.name)}</b><div class="muted">eingelöst am ${new Date(r.redeemedAt).toLocaleDateString('de-DE')}</div></div><span class="muted">${fmt(r.price)} €</span></div>`;
+        return `<div class="stack" style="gap:6px"><div class="between"><b>${esc(r.name)}</b><span style="font-weight:700">${fmt(r.price)} €</span></div>${goalBar(si.available, r.price, true)}
+        <div class="between"><span class="muted">${left <= 0 ? 'Bereit zum Einlösen!' : `freigeschaltet in ${days} ${days === 1 ? 'Tag' : 'Tagen'}`}</span><span class="row">${left <= 0 ? `<button class="btn small" data-a="redeem" data-id="${r.id}">Einlösen</button>` : ''}<button class="iconbtn" data-a="rewardDel" data-id="${r.id}" aria-label="Belohnung entfernen">${ic('trash', 18)}</button></span></div></div>`;
+      }).join('')}
+      <button class="btn ghost" data-a="rewardAdd" style="border-style:dashed">Eigene Belohnung hinzufügen</button>
+    </div>
+
+    <div class="card">
+      <h3>Ausrutscher?</h3>
+      <p class="muted">Kein Drama. Dein Garten und deine XP bleiben – nur der Zähler startet neu. Die meisten schaffen es nach ein paar Anläufen.</p>
+      <button class="btn ghost small" data-a="slip">Ausrutscher eintragen</button>
+    </div>
+  </div>`;
+}
+
+/* ---------- Verlauf / Graphen ---------- */
+const METRICS = {
+  walk: { name: 'Spaziergang', unit: 'Min', dec: 0, goal: () => S.settings.goals.walk },
+  gym: { name: 'Gym', unit: 'Min', dec: 0, goal: () => null, sum: true },
+  sleep: { name: 'Schlaf', unit: 'Std', dec: 1, goal: () => S.settings.goals.sleepH, tol: 0.25 },
+  water: { name: 'Wasser', unit: 'l', dec: 1, goal: () => S.settings.goals.water },
+  veg: { name: 'Obst & Gemüse', unit: 'Port.', dec: 1, goal: () => S.settings.goals.veg },
+  xp: { name: 'XP', unit: 'XP', dec: 0, goal: () => null },
+};
+function metricVal(m, k) {
+  const d = peek(k);
+  if (m === 'sleep') { const s = sleepMin(d); return s ? s / 60 : null; }
+  if (m === 'xp') { const x = G.xpByDay[k]; return x ? Object.values(x).reduce((a, c) => a + c, 0) : 0; }
+  if (!d) return 0;
+  if (m === 'gym') return d.gym.reduce((a, g) => a + (Number(g.min) || 0), 0);
+  return Number(d[m]) || 0;
+}
+function buildSeries(m, range) {
+  const sumAgg = METRICS[m].sum && (range === '90' || range === '365');
+  const today = new Date(); const start = parseDk(dk(new Date(S.createdAt)));
+  const valid = d => !(d < start && !S.days[dk(d)]);
+  const B = [];
+  if (range === '7' || range === '30') {
+    const n = +range;
+    for (let i = n - 1; i >= 0; i--) { const d = addDays(today, -i); B.push({ label: n === 7 ? WD[d.getDay()] : (i % 5 === 0 ? d.getDate() + '.' : ''), tip: fmtDate(d), days: valid(d) ? [dk(d)] : [] }); }
+  } else if (range === '90') {
+    const mon = weekStart(today);
+    for (let i = 12; i >= 0; i--) { const ws = addDays(mon, -7 * i), days = []; for (let j = 0; j < 7; j++) { const d = addDays(ws, j); if (dk(d) <= dk(today) && valid(d)) days.push(dk(d)); } B.push({ label: i % 3 === 0 ? `${ws.getDate()}.${ws.getMonth() + 1}.` : '', tip: 'Woche ab ' + fmtDate(ws), days }); }
+  } else {
+    for (let i = 11; i >= 0; i--) { const mm = new Date(today.getFullYear(), today.getMonth() - i, 1), days = []; for (let d = new Date(mm); d.getMonth() === mm.getMonth() && dk(d) <= dk(today); d = addDays(d, 1)) if (valid(d)) days.push(dk(d)); B.push({ label: MON[mm.getMonth()].slice(0, i % 2 ? 0 : 3), tip: MONL[mm.getMonth()] + ' ' + mm.getFullYear(), days }); }
+  }
+  for (const b of B) { const vals = b.days.map(k => metricVal(m, k)).filter(v => v !== null); b.value = vals.length ? vals.reduce((a, c) => a + c, 0) / (sumAgg ? 1 : vals.length) : null; b.n = vals.length; }
+  return B;
+}
+function niceMax(v) { if (v <= 0) return 1; const p = Math.pow(10, Math.floor(Math.log10(v))); const f = v / p; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p; }
+let chartData = [];
+function chartSVG(B, M) {
+  const W = 340, H = 210, L = 34, R = 8, T = 12, Bt = 24, pw = W - L - R, ph = H - T - Bt;
+  const goal = M.goal(); const vals = B.map(b => b.value || 0);
+  const max = niceMax(Math.max(...vals, goal || 0) * 1.08 || 1);
+  const y = v => T + ph - v / max * ph; const slot = pw / B.length, bw = Math.max(3, Math.min(26, slot - 2));
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(M.name)} im Verlauf">`;
+  for (let i = 0; i <= 4; i++) { const v = max / 4 * i, yy = y(v); s += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" stroke="#2C3830" stroke-width="1"/><text x="${L - 6}" y="${yy + 4}" text-anchor="end" font-size="10" fill="#9FAA9C">${fmt(v, Number.isInteger(max / 4) ? 0 : 1)}</text>`; }
+  B.forEach((b, i) => {
+    const cx = L + slot * i + slot / 2;
+    if (b.value) { const top = y(b.value), hgt = T + ph - top, r = Math.min(4, bw / 2, hgt); const x0 = cx - bw / 2, x1 = cx + bw / 2, yb = T + ph;
+      const hit = goal && b.value >= goal - (M.tol || 0);
+      s += `<path d="M${x0} ${yb} V${top + r} Q${x0} ${top} ${x0 + r} ${top} H${x1 - r} Q${x1} ${top} ${x1} ${top + r} V${yb}Z" fill="${hit ? '#8FBF98' : '#5E8A68'}"/>`; }
+    if (b.label) s += `<text x="${cx}" y="${H - 7}" text-anchor="middle" font-size="10" fill="#9FAA9C">${esc(b.label)}</text>`;
+    s += `<rect x="${L + slot * i}" y="${T}" width="${slot}" height="${ph}" fill="transparent" data-i="${i}"/>`;
+  });
+  if (goal) { const gy = y(goal); s += `<line x1="${L}" x2="${W - R}" y1="${gy}" y2="${gy}" stroke="#D9A85A" stroke-width="1.5" stroke-dasharray="5 4"/><text x="${W - R}" y="${gy - 5}" text-anchor="end" font-size="10" font-weight="700" fill="#D9A85A">Ziel ${fmt(goal, M.dec)}</text>`; }
+  s += `<line x1="${L}" x2="${W - R}" y1="${T + ph}" y2="${T + ph}" stroke="#4A5548"/></svg>`;
+  return s;
+}
+function renderVerlauf() {
+  const M = METRICS[chart.metric]; const B = buildSeries(chart.metric, chart.range); chartData = B;
+  const withData = B.filter(b => b.value !== null && b.n);
+  const avg = withData.length ? withData.reduce((a, b) => a + b.value * b.n, 0) / withData.reduce((a, b) => a + b.n, 0) : 0;
+  const allDays = B.flatMap(b => b.days); const goal = M.goal();
+  const dayVals = allDays.map(k => metricVal(chart.metric, k)).filter(v => v !== null);
+  const best = dayVals.length ? Math.max(...dayVals) : 0; const hits = goal ? dayVals.filter(v => v >= goal - (M.tol || 0)).length : null;
+  const sum = dayVals.reduce((a, c) => a + c, 0);
+  let gymInfo = '';
+  if (chart.metric === 'gym') { const cnt = {}; let n = 0; allDays.forEach(k => { const d = peek(k); if (d) d.gym.forEach(g => { cnt[g.type] = (cnt[g.type] || 0) + 1; n++; }); }); gymInfo = `<div class="card"><h3>${n} Trainings im Zeitraum</h3><div class="chips">${Object.entries(cnt).sort((a, b) => b[1] - a[1]).map(([t, c]) => `<span class="chip" style="cursor:default;display:inline-flex;align-items:center">${esc(t)} · ${c}×</span>`).join('') || '<span class="muted">Noch keine Trainings.</span>'}</div></div>`; }
+  const agg = M.sum ? (chart.range === '90' ? 'pro Woche' : chart.range === '365' ? 'pro Monat' : 'pro Tag') : (chart.range === '90' ? 'Ø pro Tag je Woche' : chart.range === '365' ? 'Ø pro Tag je Monat' : 'pro Tag');
+  return `
+  <header class="top"><h1>Verlauf</h1><p class="sub">Deine Entwicklung über die Zeit.</p></header>
+  <div class="section">
+    <div class="metrics" role="group" aria-label="Messwert">${Object.entries(METRICS).map(([k, m]) => `<button type="button" class="chip" data-a="metric" data-v="${k}" aria-pressed="${chart.metric === k}">${m.name}</button>`).join('')}</div>
+    <div class="seg" role="group" aria-label="Zeitraum">${[['7', '7 Tage'], ['30', '30 Tage'], ['90', '3 Monate'], ['365', '1 Jahr']].map(([k, l]) => `<button type="button" data-a="range" data-v="${k}" aria-pressed="${chart.range === k}">${l}</button>`).join('')}</div>
+    <div class="card">
+      <div class="between"><h2>${esc(M.name)}</h2><span class="muted">${M.unit} ${agg}</span></div>
+      <div class="chartWrap" id="chartWrap">${chartSVG(B, M)}<div class="tip" id="tip"></div></div>
+      <div class="kpis">
+        <div class="kpi"><div class="v">${fmt(avg, M.dec)}</div><div class="l">Ø ${M.unit}/Tag</div></div>
+        <div class="kpi"><div class="v">${fmt(best, M.dec)}</div><div class="l">Bester Tag</div></div>
+        <div class="kpi"><div class="v">${hits !== null ? `${hits}/${dayVals.length}` : fmt(sum, M.dec)}</div><div class="l">${hits !== null ? 'Tage Ziel erreicht' : 'Summe'}</div></div>
+      </div>
+      <details><summary>Als Tabelle anzeigen</summary><table><thead><tr><th>Zeitraum</th><th>${esc(M.unit)}</th></tr></thead><tbody>${B.map(b => `<tr><td>${esc(b.tip)}</td><td>${b.value === null ? '–' : fmt(b.value, M.dec)}</td></tr>`).join('')}</tbody></table></details>
+    </div>
+    ${gymInfo}
+  </div>`;
+}
+function bindChart() {
+  const wrap = document.getElementById('chartWrap'); if (!wrap) return; const tip = document.getElementById('tip'); const svg = wrap.querySelector('svg'); const M = METRICS[chart.metric];
+  const show = e => {
+    const t = e.target.closest('rect[data-i]'); if (!t) { tip.style.display = 'none'; return; }
+    const b = chartData[+t.dataset.i]; const r = t.getBoundingClientRect(), wr = wrap.getBoundingClientRect();
+    tip.innerHTML = `${esc(b.tip)}<b>${b.value === null ? 'keine Daten' : fmt(b.value, M.dec) + ' ' + M.unit}</b>`;
+    tip.style.display = 'block'; tip.style.left = clamp(r.left - wr.left + r.width / 2, 60, wr.width - 60) + 'px'; tip.style.top = '30px';
+  };
+  svg.addEventListener('pointermove', show); svg.addEventListener('click', show); svg.addEventListener('pointerleave', () => tip.style.display = 'none');
+}
+
+/* ---------- Mehr / Einstellungen ---------- */
+function renderMehr() {
+  const s = S.settings, g = s.goals, n = s.notify; const perm = ('Notification' in window) ? Notification.permission : 'unsupported';
+  const q = S.smoke.quitAt ? new Date(S.smoke.quitAt) : null; const ql = q ? `${q.getFullYear()}-${pad(q.getMonth() + 1)}-${pad(q.getDate())}T${pad(q.getHours())}:${pad(q.getMinutes())}` : '';
+  return `
+  <header class="top"><h1>Einstellungen</h1><p class="sub">Alles bleibt auf deinem Gerät.</p></header>
+  <div class="section">
+    <div class="card">
+      <h2>Du</h2>
+      <label class="field">Vorname<input type="text" value="${esc(s.name)}" data-c="set" data-k="name" autocomplete="given-name"></label>
+      <div class="grid2"><label class="field">Licht aus<input type="time" value="${s.bed}" data-c="set" data-k="bed"></label><label class="field">Aufstehen<input type="time" value="${s.wake}" data-c="set" data-k="wake"></label></div>
+      <label class="field">Runterfahren (Minuten vor dem Schlafen)<input type="number" inputmode="numeric" value="${s.windDownMin}" data-c="set" data-k="windDownMin" data-num="1"></label>
+    </div>
+    <div class="card">
+      <h2>Ziele</h2>
+      <div class="grid2">
+        <label class="field">Spaziergang (Min)<input type="number" inputmode="numeric" value="${g.walk}" data-c="goal" data-k="walk"></label>
+        <label class="field">Gym pro Woche<input type="number" inputmode="numeric" value="${g.gymPerWeek}" data-c="goal" data-k="gymPerWeek"></label>
+        <label class="field">Wasser (l)<input type="number" inputmode="decimal" step="0.25" value="${g.water}" data-c="goal" data-k="water"></label>
+        <label class="field">Obst &amp; Gemüse<input type="number" inputmode="numeric" value="${g.veg}" data-c="goal" data-k="veg"></label>
+        <label class="field">Schlaf (Std)<input type="number" inputmode="decimal" step="0.25" value="${g.sleepH}" data-c="goal" data-k="sleepH"></label>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Rauchfrei</h2>
+      <label class="field">Rauchfrei seit<input type="datetime-local" value="${ql}" data-c="quit"></label>
+      <div class="grid2">
+        <label class="field">Zigaretten pro Tag (vorher)<input type="number" inputmode="numeric" value="${S.smoke.perDay}" data-c="smoke" data-k="perDay"></label>
+        <label class="field">Kosten pro Woche (€)<input type="number" inputmode="decimal" step="0.5" value="${S.smoke.pricePerWeek}" data-c="smoke" data-k="pricePerWeek"></label>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row">${ic('bell', 22, 'var(--acc)')}<h2>Benachrichtigungen</h2></div>
+      <p class="muted">Morgen-Briefing nach dem Aufstehen, kleine Erinnerungen über den Tag und eine Abendroutine vor dem Schlafen.</p>
+      ${perm === 'unsupported' ? '<p class="muted">Dieser Browser unterstützt keine Benachrichtigungen. Installiere die App auf deinem Homescreen.</p>' : `
+      <button class="btn ${n.enabled && perm === 'granted' ? 'ghost' : ''}" data-a="notifyToggle">${n.enabled && perm === 'granted' ? 'Benachrichtigungen ausschalten' : 'Benachrichtigungen aktivieren'}</button>
+      ${n.enabled && perm === 'granted' ? `
+      <label class="check"><input type="checkbox" data-c="notify" data-k="morning" ${n.morning ? 'checked' : ''}> Morgen-Briefing</label>
+      <label class="check"><input type="checkbox" data-c="notify" data-k="day" ${n.day ? 'checked' : ''}> Erinnerungen am Tag</label>
+      <label class="check"><input type="checkbox" data-c="notify" data-k="evening" ${n.evening ? 'checked' : ''}> Abendroutine</label>
+      <button class="btn ghost small" data-a="notifyTest">Test-Benachrichtigung</button>` : ''}
+      ${perm === 'denied' ? '<p class="muted">Benachrichtigungen sind blockiert. Erlaube sie in den Browser-Einstellungen für diese Seite.</p>' : ''}
+      ${n.enabled && perm === 'granted' ? `<div class="stack" style="gap:10px;border-top:1px solid var(--line);padding-top:14px">
+        <h3>Push-Dienst ${n.push ? '· verbunden' : ''}</h3>
+        <p class="muted">${n.push ? 'Erinnerungen kommen jetzt auch bei geschlossener App. Die Uhrzeiten stehen in schedule.json in deinem GitHub-Repository.' : 'Damit Erinnerungen auch bei komplett geschlossener App kommen: Push-Dienst verbinden, den Code kopieren und als Secret PUSH_SUBSCRIPTION in GitHub speichern.'}</p>
+        <button class="btn ${n.push ? 'ghost' : 'line'} small" data-a="pushConnect">${n.push ? 'Code erneut anzeigen' : 'Push-Dienst verbinden'}</button>
+        ${n.push ? '<button class="btn ghost small" data-a="pushOff">Push-Dienst trennen</button>' : ''}
+      </div>` : `<p class="muted">Aktiviere zuerst die Benachrichtigungen. Danach kannst du den Push-Dienst verbinden, damit Erinnerungen auch bei geschlossener App kommen.</p>`}`}
+    </div>
+    <div class="card">
+      <h2>Nachrichten</h2>
+      <p class="muted">${GOOD_NEWS.length} gute Nachrichten sind fest eingebaut. Dazu lädt die App täglich aktuelle Meldungen aus deinem Nachrichten-Feed (news.json). Eine andere Adresse ist optional.</p>
+      <label class="field">Adresse für aktuelle Nachrichten (optional)<input type="url" value="${esc(s.newsUrl)}" placeholder="https://…/news.json" data-c="set" data-k="newsUrl"></label>
+      ${S.news.fetchedOn ? `<div class="muted">Zuletzt geladen: ${esc(S.news.fetchedOn)} · ${S.news.remote.length} Nachrichten</div>` : ''}
+    </div>
+    <div class="card">
+      <h2>Datensicherung</h2>
+      <p class="muted">Deine Daten liegen nur auf diesem Gerät. Speichere regelmäßig ein Backup, zum Beispiel in deiner Cloud. ${S.backup.lastAt ? 'Letztes Backup: ' + new Date(S.backup.lastAt).toLocaleDateString('de-DE') : 'Noch kein Backup.'}</p>
+      <button class="btn" data-a="export">Backup speichern</button>
+      <label class="btn ghost" style="display:flex;align-items:center;justify-content:center;cursor:pointer">Backup wiederherstellen<input type="file" accept="application/json,.json" data-c="import" class="sr"></label>
+    </div>
+    <p class="muted center">Hain ${APP_VERSION} · Datenformat ${SCHEMA_VERSION}</p>
+  </div>`;
+}
+
+function renderOnboarding() {
+  const now = new Date(); const ql = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  return `<header class="top" style="padding-top:calc(48px + env(safe-area-inset-top))"><div class="eyebrow">Willkommen bei Hain</div><h1>Dein Garten wartet.</h1><p class="sub">Ein paar Angaben, dann geht es los. Du kannst alles später ändern.</p></header>
+  <div class="section">${gardenPreview()}
+    <div class="card">
+      <label class="field">Vorname (optional)<input id="obName" type="text" autocomplete="given-name"></label>
+      <label class="field">Rauchfrei seit<input id="obQuit" type="datetime-local" value="${ql}"></label>
+      <div class="grid2"><label class="field">Zigaretten pro Tag<input id="obPer" type="number" inputmode="numeric" value="15"></label><label class="field">Kosten pro Woche (€)<input id="obPrice" type="number" inputmode="decimal" value="10"></label></div>
+      <div class="grid2"><label class="field">Licht aus<input id="obBed" type="time" value="21:00"></label><label class="field">Aufstehen<input id="obWake" type="time" value="04:30"></label></div>
+      <button class="btn" data-a="obDone">Los geht's</button>
+    </div>
+  </div>`;
+}
+function gardenPreview() { const keep = S.onboarded; G = G || null; try { computeAll(); return `<div class="card" style="padding:0;overflow:hidden">${gardenSVG()}</div>`; } catch (e) { return ''; } }
+
+/* ---------- Sheets (Overlays) ---------- */
+let sheetCleanup = null;
+function openSheet(html) {
+  closeSheet();
+  document.getElementById('sheetRoot').innerHTML = `<div class="sheetWrap" data-a="sheetBg"><div class="sheet" role="dialog" aria-modal="true"><button class="iconbtn x" data-a="closeSheet" aria-label="Schließen">${ic('x')}</button>${html}</div></div>`;
+}
+function closeSheet() { if (sheetCleanup) { sheetCleanup(); sheetCleanup = null; } document.getElementById('sheetRoot').innerHTML = ''; }
+
+function sheetGym() {
+  let type = 'Push';
+  openSheet(`<h2>Training eintragen</h2>
+    <div class="field">Art<div class="chips" id="gymTypes">${GYM_TYPES.map(t => `<button type="button" class="chip" data-a="gymType" data-v="${t}" aria-pressed="${t === type}">${t}</button>`).join('')}</div></div>
+    <label class="field">Dauer in Minuten<input id="gymMin" type="number" inputmode="numeric" value="60" min="1"></label>
+    <label class="field">Notiz (optional)<input id="gymNote" type="text" placeholder="z. B. Bankdrücken 60 kg 3×8"></label>
+    <button class="btn" data-a="gymSave">Speichern</button>`);
+}
+function sheetStretch() {
+  let i = 0, left = STRETCHES[0][2], timer = null, running = false;
+  const draw = () => {
+    const [t, d] = STRETCHES[i];
+    document.querySelector('.sheet').innerHTML = `<button class="iconbtn x" data-a="closeSheet" aria-label="Schließen">${ic('x')}</button>
+      <div class="eyebrow">Übung ${i + 1} von ${STRETCHES.length}</div><h2>${t}</h2><p style="color:var(--ink2)">${d}</p>
+      <div class="center big" style="font-size:64px;margin:10px 0" aria-live="polite">${left}</div>
+      ${goalBar(i + 1 - left / STRETCHES[i][2], STRETCHES.length)}
+      <div class="grid2"><button class="btn ghost" data-a="stPrev" ${i === 0 ? 'disabled' : ''}>Zurück</button><button class="btn" data-a="stToggle">${running ? 'Pause' : 'Start'}</button></div>
+      <button class="btn ghost small" data-a="stNext">${i === STRETCHES.length - 1 ? 'Fertig' : 'Nächste Übung'}</button>`;
+  };
+  openSheet(''); draw();
+  const tick = () => { left--; if (left <= 0) { beep(); next(); } else draw(); };
+  const next = () => { if (i < STRETCHES.length - 1) { i++; left = STRETCHES[i][2]; draw(); } else finish(); };
+  const finish = () => { clearInterval(timer); const d = day(todayK()); d.morning.stretch = true; d.stretchDone++; save(); closeSheet(); toast('Dehnroutine geschafft · +15 XP'); render(); };
+  ACT.stToggle = () => { running = !running; clearInterval(timer); if (running) timer = setInterval(tick, 1000); draw(); };
+  ACT.stNext = () => next();
+  ACT.stPrev = () => { if (i > 0) { i--; left = STRETCHES[i][2]; draw(); } };
+  sheetCleanup = () => clearInterval(timer);
+}
+function sheetBreathe() {
+  const total = 180; let t = 0, timer, phase = 'ein';
+  openSheet(`<h2>Atme mit dem Kreis</h2><p class="muted">4 Sekunden ein, 6 Sekunden aus. Langsames Ausatmen beruhigt dein Nervensystem.</p>
+    <div class="breathe" id="circ"></div><div class="center" style="font-family:var(--serif);font-size:26px" id="phase">Einatmen</div><div class="center muted" id="bleft">3:00</div>
+    <button class="btn ghost" data-a="closeSheet">Beenden</button>`);
+  const c = () => document.getElementById('circ');
+  const step = () => {
+    if (!c()) return;
+    const cyc = t % 10; const inh = cyc < 4;
+    if (cyc === 0) { c().style.transitionDuration = '4s'; c().style.transform = 'scale(1)'; }
+    if (cyc === 4) { c().style.transitionDuration = '6s'; c().style.transform = 'scale(.55)'; }
+    document.getElementById('phase').textContent = inh ? 'Einatmen' : 'Ausatmen';
+    const r = total - t; document.getElementById('bleft').textContent = `${Math.floor(r / 60)}:${pad(r % 60)}`;
+    t++;
+    if (t > total) { clearInterval(timer); const d = day(todayK()); d.breaths++; save(); closeSheet(); toast('Gut gemacht. Das Verlangen ist leiser geworden.'); render(); }
+  };
+  setTimeout(step, 50); timer = setInterval(step, 1000);
+  sheetCleanup = () => clearInterval(timer);
+}
+function sheetGame() {
+  openSheet(`<h2>Glühwürmchen fangen</h2><p class="muted">Tippe so viele Glühwürmchen an, wie du in 60 Sekunden schaffst.</p><canvas class="game" id="gc" aria-label="Spielfeld"></canvas><div class="between"><span id="gscore" class="num">0</span><span id="gtime" class="muted">60 s</span></div>`);
+  const cv = document.getElementById('gc'), ctx = cv.getContext('2d'); const dpr = window.devicePixelRatio || 1;
+  const W = cv.clientWidth, H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.scale(dpr, dpr);
+  let flies = [], score = 0, end = performance.now() + 60000, raf, over = false;
+  const spawn = () => flies.push({ x: Math.random() * (W - 40) + 20, y: Math.random() * (H - 40) + 20, vx: (Math.random() - .5) * 1.4, vy: (Math.random() - .5) * 1.4, r: 14 + Math.random() * 8, ph: Math.random() * 6, life: 0 });
+  for (let i = 0; i < 5; i++) spawn();
+  const loop = now => {
+    ctx.clearRect(0, 0, W, H);
+    const left = Math.max(0, (end - now) / 1000);
+    flies.forEach(f => { f.x += f.vx; f.y += f.vy; f.ph += .08; if (f.x < 15 || f.x > W - 15) f.vx *= -1; if (f.y < 15 || f.y > H - 15) f.vy *= -1; const a = .55 + Math.sin(f.ph) * .45;
+      const gr = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 2); gr.addColorStop(0, `rgba(241,224,138,${a})`); gr.addColorStop(1, 'rgba(241,224,138,0)'); ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(f.x, f.y, f.r * 2, 0, 7); ctx.fill();
+      ctx.fillStyle = `rgba(255,245,190,${a})`; ctx.beginPath(); ctx.arc(f.x, f.y, 3.5, 0, 7); ctx.fill(); });
+    const st = document.getElementById('gtime'); if (st) st.textContent = Math.ceil(left) + ' s';
+    if (left <= 0) { over = true; ctx.fillStyle = '#E6E2D6'; ctx.font = '600 22px Fraunces, Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText(`${score} gefangen – stark!`, W / 2, H / 2); return; }
+    raf = requestAnimationFrame(loop);
+  };
+  raf = requestAnimationFrame(loop);
+  cv.addEventListener('pointerdown', e => {
+    if (over) return; const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    const i = flies.findIndex(f => Math.hypot(f.x - x, f.y - y) < f.r + 12);
+    if (i >= 0) { flies.splice(i, 1); score++; document.getElementById('gscore').textContent = score; spawn(); if (score % 4 === 0) spawn(); }
+  });
+  sheetCleanup = () => cancelAnimationFrame(raf);
+}
+function sheetOutside() {
+  let left = 300, timer;
+  openSheet(`<h2>Kurz rausgehen</h2><p style="color:var(--ink2)">Zieh dir Schuhe an, geh vor die Tür und schau in die Ferne. Fünf Minuten frische Luft und Bewegung – das Verlangen wird in der Zeit fast immer schwächer.</p><div class="center big" id="oleft">5:00</div><button class="btn" data-a="outsideDone">Zurück – 5 Min als Spaziergang eintragen</button>`);
+  timer = setInterval(() => { left--; const el = document.getElementById('oleft'); if (el) el.textContent = `${Math.floor(Math.max(0, left) / 60)}:${pad(Math.max(0, left) % 60)}`; if (left <= 0) { clearInterval(timer); beep(); } }, 1000);
+  sheetCleanup = () => clearInterval(timer);
+}
+function sheetCraving() {
+  openSheet(`<h2>Verlangen notieren</h2><p class="muted">Wenn du deine Auslöser kennst, kannst du dich darauf vorbereiten.</p>
+    <div class="field">Was hat es ausgelöst?<div class="chips">${TRIGGERS.map(t => `<button type="button" class="chip" data-a="pick" data-g="trig" data-v="${t}" aria-pressed="false">${t}</button>`).join('')}</div></div>
+    <div class="field">Wie stark?<div class="chips">${[1, 2, 3, 4, 5].map(n => `<button type="button" class="chip" data-a="pick" data-g="int" data-v="${n}" aria-pressed="false">${n}</button>`).join('')}</div></div>
+    <button class="btn" data-a="cravingSave">Überstanden · +5 XP</button>`);
+}
+function sheetReward() {
+  openSheet(`<h2>Eigene Belohnung</h2><label class="field">Was gönnst du dir?<input id="rwName" type="text" placeholder="z. B. Neue Kopfhörer"></label><label class="field">Preis in €<input id="rwPrice" type="number" inputmode="decimal" min="1"></label><button class="btn" data-a="rewardSave">Hinzufügen</button>`);
+}
+function sheetConfirm(title, text, action, label) {
+  openSheet(`<h2>${title}</h2><p style="color:var(--ink2)">${text}</p><button class="btn" data-a="${action}">${label}</button><button class="btn ghost" data-a="closeSheet">Abbrechen</button>`);
+}
+
+/* ---------- Aktionen ---------- */
+const ACT = {
+  tab: el => { tab = el.dataset.v; window.scrollTo(0, 0); render(); },
+  dayPrev: () => { sel = dk(addDays(parseDk(sel), -1)); render(); },
+  dayNext: () => { const n = dk(addDays(parseDk(sel), 1)); if (n <= todayK()) { sel = n; render(); } },
+  dayToday: () => { sel = todayK(); render(); },
+  add: el => { const d = day(sel), f = el.dataset.f, n = Number(el.dataset.n); d[f] = Math.max(0, Math.round((d[f] + n) * 100) / 100); save(); render(); },
+  mood: el => { const d = day(sel), n = +el.dataset.n; d.mood = d.mood === n ? 0 : n; save(); render(); },
+  sleepPlan: () => { const d = day(sel); d.sleep.bed = S.settings.bed; d.sleep.wake = S.settings.wake; save(); render(); },
+  stretch: () => sheetStretch(),
+  sos: () => { tab = 'rauchfrei'; window.scrollTo(0, 0); render(); },
+  breathe: () => sheetBreathe(), game: () => sheetGame(), outside: () => sheetOutside(), craving: () => sheetCraving(),
+  outsideDone: () => { const d = day(todayK()); d.walk += 5; save(); closeSheet(); toast('5 Minuten frische Luft · eingetragen'); render(); },
+  gymAdd: () => sheetGym(),
+  gymType: el => { document.querySelectorAll('#gymTypes .chip').forEach(c => c.setAttribute('aria-pressed', c === el)); },
+  gymSave: () => {
+    const type = document.querySelector('#gymTypes .chip[aria-pressed="true"]')?.dataset.v || 'Push';
+    const min = Math.max(1, Number(document.getElementById('gymMin').value) || 0), note = document.getElementById('gymNote').value.trim();
+    day(sel).gym.push({ id: uid(), type, min, note }); save(); closeSheet(); toast(`${type} · ${min} Min eingetragen`); render();
+  },
+  gymDel: el => { const d = day(sel); d.gym = d.gym.filter(g => g.id !== el.dataset.id); save(); render(); },
+  pick: el => { document.querySelectorAll(`.chip[data-g="${el.dataset.g}"]`).forEach(c => c.setAttribute('aria-pressed', c === el)); },
+  cravingSave: () => {
+    const trigger = document.querySelector('.chip[data-g="trig"][aria-pressed="true"]')?.dataset.v || null;
+    const intensity = Number(document.querySelector('.chip[data-g="int"][aria-pressed="true"]')?.dataset.v || 0) || null;
+    S.smoke.cravings.push({ at: new Date().toISOString(), trigger, intensity }); save(); closeSheet(); toast('Überstanden. Jedes Mal wird es leichter.'); render();
+  },
+  rewardAdd: () => sheetReward(),
+  rewardSave: () => { const name = document.getElementById('rwName').value.trim(), price = Number(document.getElementById('rwPrice').value); if (!name || !(price > 0)) return toast('Bitte Name und Preis angeben'); S.rewards.push({ id: uid(), name, price, redeemedAt: null }); save(); closeSheet(); render(); },
+  rewardDel: el => { S.rewards = S.rewards.filter(r => r.id !== el.dataset.id); save(); render(); },
+  redeem: el => { const r = S.rewards.find(x => x.id === el.dataset.id); if (r) { r.redeemedAt = new Date().toISOString(); save(); toast(`Gönn dir: ${r.name}!`); render(); } },
+  slip: () => sheetConfirm('Ausrutscher eintragen?', 'Dein Garten, deine XP und deine Abzeichen bleiben. Nur der Zähler beginnt neu. Überleg kurz, was der Auslöser war – das hilft beim nächsten Mal.', 'slipSave', 'Eintragen und neu starten'),
+  slipSave: () => { S.smoke.slips.push({ at: new Date().toISOString() }); save(); closeSheet(); toast('Neuer Start. Du schaffst das.'); render(); },
+  quitNow: () => { S.smoke.quitAt = new Date().toISOString(); save(); render(); },
+  plantRare: el => { if (G.seeds < 25) return; S.garden.seedsSpent += 25; S.garden.rare.push(el.dataset.v); save(); toast(`${el.dataset.v} gepflanzt`); render(); },
+  prestige: () => sheetConfirm('Neue Landschaft beginnen?', 'Dein jetziger Garten wandert in die Galerie. Deine Beete starten in der neuen Landschaft wieder als Samen, dein Level, deine Samen und dein Herbarium bleiben.', 'prestigeDo', 'Neue Landschaft'),
+  prestigeDo: () => {
+    computeAll(); const bi = BIOMES[S.garden.landscape % BIOMES.length];
+    S.garden.gallery.push({ name: bi.name, at: new Date().toISOString() });
+    S.garden.seedsBanked += G.seedsEarnedNow;
+    for (const b of G.beds) S.garden.offsets[b.id] += b.xp;
+    S.garden.landscape++; save(); closeSheet(); toast('Willkommen in deiner neuen Landschaft'); render();
+  },
+  metric: el => { chart.metric = el.dataset.v; render(); },
+  range: el => { chart.range = el.dataset.v; render(); },
+  export: () => exportData(),
+  notifyToggle: async () => {
+    const n = S.settings.notify;
+    if (n.enabled && Notification.permission === 'granted') { n.enabled = false; save(); render(); return; }
+    const p = await Notification.requestPermission(); n.enabled = p === 'granted'; save(); render(); if (n.enabled) { scheduleNotifications(); toast('Benachrichtigungen sind an'); }
+  },
+  notifyTest: () => notify('Hain', 'So sehen deine Erinnerungen aus. Schön, dass du dranbleibst.', true),
+  pushConnect: () => pushConnect(),
+  pushOff: async () => { try { const reg = await navigator.serviceWorker.getRegistration(); const sub = reg && await reg.pushManager.getSubscription(); if (sub) await sub.unsubscribe(); } catch (e) { } S.settings.notify.push = false; save(); scheduleNotifications(); render(); },
+  copySub: async () => { const ta = document.getElementById('subCode'); try { await navigator.clipboard.writeText(ta.value); toast('Code kopiert'); } catch (e) { ta.select(); toast('Bitte markierten Text kopieren'); } },
+  obDone: () => {
+    S.settings.name = document.getElementById('obName').value.trim();
+    const q = document.getElementById('obQuit').value; S.smoke.quitAt = q ? new Date(q).toISOString() : new Date().toISOString();
+    S.smoke.perDay = Number(document.getElementById('obPer').value) || 15; S.smoke.pricePerWeek = Number(document.getElementById('obPrice').value) || 10;
+    S.settings.bed = document.getElementById('obBed').value || '21:00'; S.settings.wake = document.getElementById('obWake').value || '04:30';
+    const qd = new Date(S.smoke.quitAt); if (qd < new Date(S.createdAt)) S.createdAt = qd.toISOString();
+    S.onboarded = true; save(); render();
+  },
+  closeSheet: () => closeSheet(),
+  sheetBg: (el, e) => { if (e.target === el) closeSheet(); },
+};
+document.addEventListener('click', e => { const el = e.target.closest('[data-a]'); if (!el || el.disabled) return; const f = ACT[el.dataset.a]; if (f) { if (el.tagName === 'A') e.preventDefault(); f(el, e); } });
+document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[role="link"][data-a]')) { e.preventDefault(); e.target.click(); } if (e.key === 'Escape') closeSheet(); });
+document.addEventListener('change', e => {
+  const el = e.target; const c = el.dataset.c; if (!c) return;
+  if (c === 'morning') { day(sel).morning[el.dataset.k] = el.checked; }
+  else if (c === 'num') { day(sel)[el.dataset.f] = Math.max(0, Number(el.value) || 0); }
+  else if (c === 'sleep') { day(sel).sleep[el.dataset.k] = el.value; }
+  else if (c === 'set') { S.settings[el.dataset.k] = el.dataset.num ? (Number(el.value) || 0) : el.value; if (el.dataset.k === 'newsUrl') fetchNews(true); scheduleNotifications(); }
+  else if (c === 'goal') { S.settings.goals[el.dataset.k] = Math.max(0, Number(el.value) || 0); }
+  else if (c === 'smoke') { S.smoke[el.dataset.k] = Math.max(0, Number(el.value) || 0); }
+  else if (c === 'quit') { if (el.value) S.smoke.quitAt = new Date(el.value).toISOString(); }
+  else if (c === 'notify') { S.settings.notify[el.dataset.k] = el.checked; scheduleNotifications(); }
+  else if (c === 'import') { importData(el.files[0]); return; }
+  save(); render();
+});
+
+/* ---------- Backup ---------- */
+function exportData() {
+  const blob = new Blob([JSON.stringify({ app: 'hain', exportedAt: new Date().toISOString(), state: S }, null, 1)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `hain-backup-${todayK()}.json`; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  S.backup.lastAt = new Date().toISOString(); save(); toast('Backup gespeichert'); render();
+}
+function importData(file) {
+  if (!file) return; const r = new FileReader();
+  r.onload = () => {
+    try {
+      const j = JSON.parse(r.result); const st = j.state || j; if (!st.days || !st.settings) throw new Error('kein Hain-Backup');
+      S = migrate(deepMerge(defaults(), st)); S.onboarded = true; save(); toast('Backup wiederhergestellt'); render();
+    } catch (e) { toast('Diese Datei ist kein gültiges Backup'); }
+  };
+  r.readAsText(file);
+}
+
+/* ---------- Benachrichtigungen ---------- */
+let notifyTimers = [];
+async function notify(title, body, force) {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  if (!force && !S.settings.notify.enabled) return;
+  try { const reg = navigator.serviceWorker && await navigator.serviceWorker.getRegistration(); if (reg) { reg.showNotification(title, { body, icon: 'icon-192.png', badge: 'icon-192.png', tag: title }); return; } } catch (e) { }
+  try { new Notification(title, { body, icon: 'icon-192.png' }); } catch (e) { }
+}
+function scheduleNotifications() {
+  notifyTimers.forEach(clearTimeout); notifyTimers = [];
+  if (!S || !S.settings.notify.enabled || S.settings.notify.push) return;
+  const n = S.settings.notify, now = new Date(), base = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const at = (m, title, body) => { const t = new Date(+base + m * 6e4); const key = 'hain-n-' + dk(t) + '-' + m; if (t > now) notifyTimers.push(setTimeout(() => { try { if (localStorage.getItem(key)) return; localStorage.setItem(key, '1'); } catch (e) { } computeAll(); notify(title, typeof body === 'function' ? body() : body); }, t - now)); };
+  const wake = tmin(S.settings.wake), bed = tmin(S.settings.bed);
+  if (n.morning) at(wake + 10, 'Guten Morgen', () => { const si = G.si; return `${si ? `Seit ${durStr(si.runMs)} rauchfrei. ` : ''}Glas Wasser, 5 Minuten dehnen – und dann die gute Nachricht des Tages.`; });
+  if (n.day) {
+    at(9 * 60 + 30, 'Wusstest du?', () => BENEFITS[Math.floor(Math.random() * BENEFITS.length)]);
+    at(12 * 60 + 30, 'Zeit für frische Luft', () => { const d = peek(todayK()); const w = d ? d.walk : 0; return w >= S.settings.goals.walk ? `Schon ${w} Minuten unterwegs – jede Minute mehr zählt extra.` : `Ein Spaziergang nach dem Essen tut gut. Bisher heute: ${w} Min.`; });
+    at(16 * 60, 'Dein Fortschritt', () => { const si = G.si; return si ? `${fmt(si.saved, 2)} € gespart und ${fmt(si.cigs)} Zigaretten nicht geraucht. Dein Farn wächst.` : 'Dein Garten wächst mit jeder gesunden Entscheidung.'; });
+  }
+  if (n.evening) {
+    at(bed - S.settings.windDownMin, 'Zeit zum Runterfahren', 'Bildschirm dimmen, Licht runter, kurz den Tag eintragen. Dein Schlafbeet freut sich.');
+    at(bed - 5, 'Gleich Licht aus', `Licht aus um ${S.settings.bed} – morgen um ${S.settings.wake} startest du ausgeschlafen.`);
+  }
+  // Nach Mitternacht neu planen
+  notifyTimers.push(setTimeout(scheduleNotifications, +addDays(base, 1) - now + 5000));
+}
+
+/* ---------- Push-Dienst ---------- */
+function b64urlToBytes(s) { const p = '='.repeat((4 - s.length % 4) % 4); const b = atob((s + p).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(b, c => c.charCodeAt(0)); }
+async function pushConnect() {
+  try {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return toast('Push wird hier nicht unterstützt. Öffne die App vom Homescreen.');
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) { const cfg = await (await fetch('push-config.json', { cache: 'no-store' })).json(); sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64urlToBytes(cfg.vapidPublicKey) }); }
+    S.settings.notify.push = true; save(); scheduleNotifications();
+    openSheet(`<h2>Push-Code</h2><p style="color:var(--ink2)">Kopiere diesen Code und speichere ihn in GitHub unter <b>Settings → Secrets and variables → Actions → New repository secret</b> mit dem Namen <b>PUSH_SUBSCRIPTION</b>.</p>
+      <textarea id="subCode" readonly style="width:100%;min-height:150px;border-radius:12px;border:1.5px solid var(--line);background:#141B17;color:var(--ink);padding:10px;font-size:12px;font-family:ui-monospace,monospace">${esc(JSON.stringify(sub))}</textarea>
+      <button class="btn" data-a="copySub">Code kopieren</button><button class="btn ghost" data-a="closeSheet">Fertig</button>`);
+  } catch (e) { toast('Verbinden hat nicht geklappt: ' + (e.message || e)); }
+}
+
+/* ---------- Nachrichten-Feed ---------- */
+async function fetchNews(force) {
+  const url = S.settings.newsUrl || (location.protocol.startsWith('http') ? 'news.json' : ''); if (!url) return;
+  if (!force && S.news.fetchedOn === todayK()) return;
+  try {
+    const r = await fetch(url, { cache: 'no-store' }); const j = await r.json(); const list = Array.isArray(j) ? j : j.items || [];
+    S.news.remote = list.filter(x => x && x.title).slice(0, 200).map(x => ({ title: String(x.title), text: String(x.text || x.summary || ''), url: x.url || '', date: x.date || todayK(), source: x.source ? String(x.source) : '', lang: x.lang || 'de' }));
+    S.news.fetchedOn = todayK(); S.news.order = []; save(); if (tab === 'heute') render();
+  } catch (e) { }
+}
+
+/* ---------- Kleinkram ---------- */
+function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2800); }
+let actx = null;
+function beep() { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); const o = actx.createOscillator(), g = actx.createGain(); o.frequency.value = 660; o.type = 'sine'; g.gain.setValueAtTime(.0001, actx.currentTime); g.gain.exponentialRampToValueAtTime(.2, actx.currentTime + .02); g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime + .5); o.connect(g).connect(actx.destination); o.start(); o.stop(actx.currentTime + .55); if (navigator.vibrate) navigator.vibrate(120); } catch (e) { } }
+
+// Live-Zähler und Tageswechsel
+let lastDay = todayK();
+setInterval(() => {
+  if (!S || !S.onboarded) return;
+  if (todayK() !== lastDay) { if (sel === lastDay) sel = todayK(); lastDay = todayK(); render(); return; }
+  const si = smokeInfo(); if (!si) return;
+  ['liveRun', 'liveRun2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = durStr(si.runMs); });
+}, 30000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && S && S.onboarded && !document.querySelector('.sheetWrap')) { if (todayK() !== lastDay) { sel = todayK(); lastDay = todayK(); } render(); } });
+
+/* ---------- Start ---------- */
+(async () => {
+  await loadState();
+  render();
+  scheduleNotifications();
+  fetchNews(false);
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') { try { navigator.serviceWorker.register('sw.js').catch(() => { }); } catch (e) { } }
+})();
+</script>
+</body>
+</html>

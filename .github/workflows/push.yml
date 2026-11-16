@@ -1,0 +1,30 @@
+name: Push-Benachrichtigungen
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+concurrency: push
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Gesendete Termine wiederherstellen
+        uses: actions/cache/restore@v4
+        with:
+          path: .state
+          key: sent-${{ github.run_id }}
+          restore-keys: sent-
+      - run: npm install --no-save web-push@3
+      - run: node scripts/push.mjs
+        env:
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          PUSH_SUBSCRIPTION: ${{ secrets.PUSH_SUBSCRIPTION }}
+      - name: Gesendete Termine merken
+        uses: actions/cache/save@v4
+        with:
+          path: .state
+          key: sent-${{ github.run_id }}

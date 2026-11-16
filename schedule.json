@@ -1,0 +1,12 @@
+{
+  "timezone": "Europe/Berlin",
+  "note": "Uhrzeiten der Push-Benachrichtigungen. Die Texte stellt die App selbst aus deinen Daten zusammen.",
+  "notifications": [
+    { "type": "morning",  "time": "04:40" },
+    { "type": "tip",      "time": "09:30" },
+    { "type": "walk",     "time": "12:30" },
+    { "type": "progress", "time": "16:00" },
+    { "type": "winddown", "time": "20:15" },
+    { "type": "bed",      "time": "20:55" }
+  ]
+}
