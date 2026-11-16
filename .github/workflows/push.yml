@@ -3,6 +3,11 @@ on:
   schedule:
     - cron: '*/15 * * * *'
   workflow_dispatch:
+    inputs:
+      test:
+        description: 'Sofort eine Test-Benachrichtigung senden'
+        type: boolean
+        default: true
 concurrency: push
 jobs:
   send:
@@ -23,6 +28,7 @@ jobs:
         env:
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
           PUSH_SUBSCRIPTION: ${{ secrets.PUSH_SUBSCRIPTION }}
+          PUSH_TEST: ${{ inputs.test }}
       - name: Gesendete Termine merken
         uses: actions/cache/save@v4
         with:

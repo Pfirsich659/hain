@@ -21,6 +21,13 @@ fs.mkdirSync('.state', { recursive: true });
 let sent = {}; try { sent = JSON.parse(fs.readFileSync('.state/sent.json', 'utf8')); } catch { }
 for (const k of Object.keys(sent)) if (!k.startsWith(today)) delete sent[k]; // nur heute merken
 
+if (process.env.PUSH_TEST === 'true') {
+  for (const s of subs) {
+    try { await webpush.sendNotification(s, JSON.stringify({ type: 'progress', ts: Date.now() }), { TTL: 600 }); console.log('Test-Benachrichtigung gesendet.'); }
+    catch (e) { console.error('Test fehlgeschlagen:', e.statusCode || '', e.body || e.message); process.exitCode = 1; }
+  }
+  process.exit();
+}
 const MAX_LATE = 90; // Minuten: so spät darf ein Termin noch nachgeholt werden
 let count = 0;
 for (const n of schedule.notifications) {
